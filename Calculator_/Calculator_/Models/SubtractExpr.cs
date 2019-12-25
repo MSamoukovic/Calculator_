@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator_.Models
 {
-    class SubstractExpr : Expr
+    class SubtractExpr : Expr
     {
         public override double getResult(Operand firstOperand, Operand secondOperand)
         {
