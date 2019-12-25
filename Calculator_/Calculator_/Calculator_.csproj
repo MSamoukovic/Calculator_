@@ -52,8 +52,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddExpr.cs" />
+    <Compile Include="Models\DivideExpr.cs" />
+    <Compile Include="Models\Expr.cs" />
+    <Compile Include="Models\ExpressionFactory.cs" />
+    <Compile Include="Models\MultiplyExpr.cs" />
     <Compile Include="Models\Operand.cs" />
     <Compile Include="Models\Operator.cs" />
+    <Compile Include="Models\SubstractExpr.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
