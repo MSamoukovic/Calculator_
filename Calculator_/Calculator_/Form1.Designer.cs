@@ -30,7 +30,7 @@
         {
             this.right = new System.Windows.Forms.Button();
             this.left = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.equallyButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
@@ -49,8 +49,8 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.fourButton = new System.Windows.Forms.Button();
             this.multiplyButton = new System.Windows.Forms.Button();
-            this.exprTextBox = new System.Windows.Forms.TextBox();
             this.numberTextBox = new System.Windows.Forms.TextBox();
+            this.exprTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,13 +78,13 @@
             this.left.UseVisualStyleBackColor = false;
             this.left.Click += new System.EventHandler(this.operatorClick);
             // 
-            // textBox1
+            // textBox
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.textBox1.Location = new System.Drawing.Point(37, 37);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(349, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.textBox.Location = new System.Drawing.Point(37, 37);
+            this.textBox.Name = "textBox";
+            this.textBox.Size = new System.Drawing.Size(349, 20);
+            this.textBox.TabIndex = 5;
             // 
             // tableLayoutPanel2
             // 
@@ -333,18 +333,6 @@
             this.multiplyButton.UseVisualStyleBackColor = false;
             this.multiplyButton.Click += new System.EventHandler(this.operatorClick);
             // 
-            // exprTextBox
-            // 
-            this.tableLayoutPanel2.SetColumnSpan(this.exprTextBox, 4);
-            this.exprTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exprTextBox.Location = new System.Drawing.Point(3, 15);
-            this.exprTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
-            this.exprTextBox.Name = "exprTextBox";
-            this.exprTextBox.ReadOnly = true;
-            this.exprTextBox.Size = new System.Drawing.Size(346, 22);
-            this.exprTextBox.TabIndex = 18;
-            this.exprTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // numberTextBox
             // 
             this.tableLayoutPanel2.SetColumnSpan(this.numberTextBox, 4);
@@ -357,6 +345,18 @@
             this.numberTextBox.TabIndex = 17;
             this.numberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // exprTextBox
+            // 
+            this.tableLayoutPanel2.SetColumnSpan(this.exprTextBox, 4);
+            this.exprTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exprTextBox.Location = new System.Drawing.Point(3, 15);
+            this.exprTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this.exprTextBox.Name = "exprTextBox";
+            this.exprTextBox.ReadOnly = true;
+            this.exprTextBox.Size = new System.Drawing.Size(346, 22);
+            this.exprTextBox.TabIndex = 18;
+            this.exprTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -365,7 +365,7 @@
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.right);
             this.Controls.Add(this.left);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -379,7 +379,7 @@
 
         private System.Windows.Forms.Button right;
         private System.Windows.Forms.Button left;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button equallyButton;
         private System.Windows.Forms.Button addButton;
@@ -398,8 +398,8 @@
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button fourButton;
         private System.Windows.Forms.Button multiplyButton;
-        private System.Windows.Forms.TextBox exprTextBox;
         private System.Windows.Forms.TextBox numberTextBox;
+        private System.Windows.Forms.TextBox exprTextBox;
     }
 }
 

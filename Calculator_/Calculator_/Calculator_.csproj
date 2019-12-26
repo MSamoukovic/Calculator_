@@ -60,6 +60,7 @@
     <Compile Include="Models\Operand.cs" />
     <Compile Include="Models\Operator.cs" />
     <Compile Include="Models\SubtractExpr.cs" />
+    <Compile Include="Models\Token.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
