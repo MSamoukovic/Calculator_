@@ -49,8 +49,8 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.fourButton = new System.Windows.Forms.Button();
             this.multiplyButton = new System.Windows.Forms.Button();
-            this.numberTextBox = new System.Windows.Forms.TextBox();
             this.exprTextBox = new System.Windows.Forms.TextBox();
+            this.numberTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -333,18 +333,6 @@
             this.multiplyButton.UseVisualStyleBackColor = false;
             this.multiplyButton.Click += new System.EventHandler(this.operatorClick);
             // 
-            // numberTextBox
-            // 
-            this.tableLayoutPanel2.SetColumnSpan(this.numberTextBox, 4);
-            this.numberTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F);
-            this.numberTextBox.Location = new System.Drawing.Point(3, 36);
-            this.numberTextBox.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
-            this.numberTextBox.Name = "numberTextBox";
-            this.numberTextBox.ReadOnly = true;
-            this.numberTextBox.Size = new System.Drawing.Size(346, 33);
-            this.numberTextBox.TabIndex = 17;
-            this.numberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // exprTextBox
             // 
             this.tableLayoutPanel2.SetColumnSpan(this.exprTextBox, 4);
@@ -357,6 +345,18 @@
             this.exprTextBox.TabIndex = 18;
             this.exprTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // numberTextBox
+            // 
+            this.tableLayoutPanel2.SetColumnSpan(this.numberTextBox, 4);
+            this.numberTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F);
+            this.numberTextBox.Location = new System.Drawing.Point(3, 36);
+            this.numberTextBox.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
+            this.numberTextBox.Name = "numberTextBox";
+            this.numberTextBox.ReadOnly = true;
+            this.numberTextBox.Size = new System.Drawing.Size(346, 33);
+            this.numberTextBox.TabIndex = 17;
+            this.numberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -366,7 +366,10 @@
             this.Controls.Add(this.right);
             this.Controls.Add(this.left);
             this.Controls.Add(this.textBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();

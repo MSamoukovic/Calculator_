@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator_.Models
 {
-    class Token
+     class Token
     {
         public enum TokenType 
         { 
@@ -16,14 +16,16 @@ namespace Calculator_.Models
             RightBrace,
             Nothing
         }
-        TokenType tokenType = TokenType.Nothing; //for all tokens
+        TokenType tokenType = TokenType.Nothing;
+
         public enum Associativity
         {
             Left,
             Right
         }
         Associativity assoc = Associativity.Left;
-        double val = 0;
+
+        double tokenValue = 0;
         char symbol = ' ';
         int precedence;
         int parameterCount;
@@ -37,6 +39,32 @@ namespace Calculator_.Models
             {
                 return tokenType;
             }
+        }
+
+        public bool isNumber()
+        {
+            if (tokenType == TokenType.Number)
+                return true;
+            return false;
+        }
+        public bool isOperator()
+        {
+            if (tokenType == TokenType.Operator)
+                return true;
+            return false;
+        }
+        public bool isLeftBrace()
+        {
+            if (tokenType == TokenType.LeftBrace)
+                return true;
+            return false;
+        }
+
+        public bool isRightBrace()
+        {
+            if (tokenType == TokenType.RightBrace)
+                return true;
+            return false;
         }
         public char Symbol
         {
@@ -66,15 +94,15 @@ namespace Calculator_.Models
                 return assoc;
             }
         }
-        public double Val
+        public double TokenValue
         {
             get
             {
-                return val;
+                return tokenValue;
             }
             set
             {
-                val = value;
+                tokenValue = value;
             }
         }
 
@@ -87,57 +115,57 @@ namespace Calculator_.Models
         }
         public static Token stringToToken(string str) // ovjd eposaljemo citav input i izracunamo
         {
-            Token t = new Token();
-            if (double.TryParse(str, out t.val))
+            Token token = new Token();
+            if (double.TryParse(str, out token.tokenValue))
             {
-                t.tokenType = TokenType.Number;
+                token.tokenType = TokenType.Number;
             }
             else if (str == "(")
             {
-                t.tokenType = TokenType.LeftBrace;
+                token.tokenType = TokenType.LeftBrace;
             }
             else if (str == ")")
             {
-                t.tokenType = TokenType.RightBrace;
+                token.tokenType = TokenType.RightBrace;
             }
             else
             {
                 switch (str)
                 {
                     case "+":
-                        t.tokenType = TokenType.Operator;
-                        t.symbol = '+';
-                        t.assoc = Associativity.Left;
-                        t.precedence = 10;
-                        t.parameterCount = 2;
+                        token.tokenType = TokenType.Operator;
+                        token.symbol = '+';
+                        token.assoc = Associativity.Left;
+                        token.precedence = 10;
+                        token.parameterCount = 2;
                         break;
                     case "-":
-                        t.tokenType = TokenType.Operator;
-                        t.symbol = '-';
-                        t.assoc = Associativity.Left;
-                        t.precedence = 10;
-                        t.parameterCount = 2;
+                        token.tokenType = TokenType.Operator;
+                        token.symbol = '-';
+                        token.assoc = Associativity.Left;
+                        token.precedence = 10;
+                        token.parameterCount = 2;
                         break;
                     case "*":
-                        t.tokenType = TokenType.Operator;
-                        t.symbol = '*';
-                        t.assoc = Associativity.Left;
-                        t.precedence = 20;
-                        t.parameterCount = 2;
+                        token.tokenType = TokenType.Operator;
+                        token.symbol = '*';
+                        token.assoc = Associativity.Left;
+                        token.precedence = 20;
+                        token.parameterCount = 2;
                         break;
                     case "/":
-                        t.tokenType = TokenType.Operator;
-                        t.symbol = '/';
-                        t.assoc = Associativity.Left;
-                        t.precedence = 20;
-                        t.parameterCount = 2;
+                        token.tokenType = TokenType.Operator;
+                        token.symbol = '/';
+                        token.assoc = Associativity.Left;
+                        token.precedence = 20;
+                        token.parameterCount = 2;
                         break;
                     default:
-                        t.tokenType = TokenType.Nothing;
+                        token.tokenType = TokenType.Nothing;
                         break;
                 }
             }
-            return t;
+            return token;
         }
     }
 }

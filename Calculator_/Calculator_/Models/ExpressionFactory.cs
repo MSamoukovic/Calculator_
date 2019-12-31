@@ -12,11 +12,11 @@ namespace Calculator_.Models
         {
             switch (operation)
             {
-                case ("+"):
+                case "+":
                     return new AddExpr();
-                case ("-"):
+                case "-":
                     return new SubtractExpr();
-                case ("*"):
+                case "*":
                     return new MultiplyExpr();
                 default:
                     return new DivideExpr();
