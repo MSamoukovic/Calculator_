@@ -16,6 +16,7 @@ namespace Calculator_.Models
             RightBrace,
             Nothing
         }
+
         TokenType tokenType = TokenType.Nothing;
 
         public enum Associativity
@@ -23,22 +24,35 @@ namespace Calculator_.Models
             Left,
             Right
         }
+
         Associativity assoc = Associativity.Left;
 
         double tokenValue = 0;
         char symbol = ' ';
         int precedence;
         int parameterCount;
-        public Token()
+
+        public TokenType getTokenType()
         {
-                
+            return tokenType;
         }
-        public TokenType GetTokenType
+
+        public char getSymbol()
         {
-            get
-            {
-                return tokenType;
-            }
+            return symbol;
+        }
+        public int getPrecedence()
+        {
+            return precedence;
+        }
+        public int getParameterCount()
+        {
+            return parameterCount;
+        }
+
+        public double getTokenValue()
+        {
+            return tokenValue;
         }
 
         public bool isNumber()
@@ -47,12 +61,14 @@ namespace Calculator_.Models
                 return true;
             return false;
         }
+
         public bool isOperator()
         {
             if (tokenType == TokenType.Operator)
                 return true;
             return false;
         }
+
         public bool isLeftBrace()
         {
             if (tokenType == TokenType.LeftBrace)
@@ -66,27 +82,8 @@ namespace Calculator_.Models
                 return true;
             return false;
         }
-        public char Symbol
-        {
-            get
-            {
-                return symbol;
-            }
-        }
-        public int ParamCount
-        {
-            get
-            {
-                return parameterCount;
-            }
-        }
-        public int Precedence
-        {
-            get
-            {
-                return precedence;
-            }
-        }
+
+
         public Associativity Assoc
         {
             get
@@ -94,6 +91,7 @@ namespace Calculator_.Models
                 return assoc;
             }
         }
+
         public double TokenValue
         {
             get
@@ -106,12 +104,12 @@ namespace Calculator_.Models
             }
         }
 
-        public void setValues(char symbol, Associativity assoc, int paramCount, int prec)
+        public void setValues(char symbol, Associativity assoc, int parameterCount, int precedence)
         {
             this.symbol = symbol;
             this.assoc = assoc;
-            this.precedence = prec;
-            this.parameterCount = paramCount;
+            this.precedence = precedence;
+            this.parameterCount = parameterCount;
         }
         public static Token stringToToken(string str) // ovjd eposaljemo citav input i izracunamo
         {

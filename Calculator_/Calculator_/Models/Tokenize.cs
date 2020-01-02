@@ -15,31 +15,16 @@ namespace Calculator_.Models
             string[] splitString = SplitForTokenize(input);
             foreach (string s in splitString)
             {
-                Token token = Token.stringToToken(s); //citamo svaki token
-                if (s == "-") 
+                Token token = Token.stringToToken(s);
+                if (s == "-")
                 {
                     if (isTokenListEmpty() || isPenultimateTokenInListLeftBrace() || isPenultimateTokenInInListOperator())
                     {
-                        token.setValues('_', Token.Associativity.Right, 1, 30);                     
+                        token.setValues('_', Token.Associativity.Right, 1, 30);
                     }
                 }
                 tokens.Add(token);
             }
-        }
-
-        private bool isPenultimateTokenInInListOperator()
-        {
-            return tokens[tokens.Count - 1].GetTokenType == Token.TokenType.Operator;
-        }
-
-        private bool isPenultimateTokenInListLeftBrace()
-        {
-            return tokens[tokens.Count - 1].GetTokenType == Token.TokenType.LeftBrace;
-        }
-
-        private bool isTokenListEmpty()
-        {
-            return tokens.Count == 0;
         }
 
         public Token[] getArrayOfTokens()
@@ -47,20 +32,35 @@ namespace Calculator_.Models
             return tokens.ToArray();
         }
 
-        private string[] SplitForTokenize(string str)
+        private string[] SplitForTokenize(string input)
         {
-            str = str.Replace("*", " * ");
-            str = str.Replace("/", " / ");
-            str = str.Replace("+", " + ");
-            str = str.Replace("-", " - ");
-            str = str.Replace("(", " ( ");
-            str = str.Replace(")", " ) ");
-            str = str.Trim();
-            while (str.Contains("  "))
+            input = input.Replace("*", " * ");
+            input = input.Replace("/", " / ");
+            input = input.Replace("+", " + ");
+            input = input.Replace("-", " - ");
+            input = input.Replace("(", " ( ");
+            input = input.Replace(")", " ) ");
+            input = input.Trim();
+            while (input.Contains("  "))
             {
-                str = str.Replace("  ", " ");
+                input = input.Replace("  ", " ");
             }
-            return str.Split(' ');
+            return input.Split(' ');
+        }
+
+        private bool isPenultimateTokenInInListOperator()
+        {
+            return tokens[tokens.Count - 1].getTokenType() == Token.TokenType.Operator;
+        }
+
+        private bool isPenultimateTokenInListLeftBrace()
+        {
+            return tokens[tokens.Count - 1].getTokenType() == Token.TokenType.LeftBrace;
+        }
+
+        private bool isTokenListEmpty()
+        {
+            return tokens.Count == 0;
         }
     }
 }

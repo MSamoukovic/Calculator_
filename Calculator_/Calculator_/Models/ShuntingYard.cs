@@ -19,7 +19,7 @@ namespace Calculator_.Models
             {
                 Token token = tokens[index];
 
-                switch (token.GetTokenType)
+                switch (token.getTokenType())
                 {
                     case TokenType.Number:
                         pushOnQueue(token);
@@ -42,6 +42,10 @@ namespace Calculator_.Models
                 index++;
             }
             popAllTokensFromStackAndPushOnQueue();
+        }
+        public Token[] getArray()
+        {
+            return outputQueue.ToArray();
         }
 
         private void popAllTokensFromStackAndPushOnQueue()
@@ -119,12 +123,12 @@ namespace Calculator_.Models
 
         private static bool isTokenOfLesserPriorityThanSecond(Token token, Token firstTokenInStack)
         {
-            return token.Precedence < firstTokenInStack.Precedence;
+            return token.getPrecedence() < firstTokenInStack.getPrecedence();
         }
 
         private static bool areTokensOfTheSamePriority(Token token, Token firstTokenInStack)
         {
-            return token.Precedence == firstTokenInStack.Precedence;
+            return token.getPrecedence() == firstTokenInStack.getPrecedence();
         }
 
         private static bool isTokenAssociativityLeft(Token token)
@@ -134,22 +138,17 @@ namespace Calculator_.Models
 
         private static bool isFirstTokenOnStackOperator(Token firstTokenInStack)
         {
-            return firstTokenInStack.GetTokenType == Token.TokenType.Operator;
+            return firstTokenInStack.getTokenType() == Token.TokenType.Operator;
         }
      
         private  bool isFirstTokenOnStackRightBrace()
         {
-            return operatorStack.Peek().GetTokenType == Token.TokenType.RightBrace;
+            return operatorStack.Peek().getTokenType() == Token.TokenType.RightBrace;
         }
 
         private  bool isFirstTokenOnStackLeftBrace()
         {
-            return operatorStack.Peek().GetTokenType == Token.TokenType.LeftBrace;
-        }
-
-        public Token[] getArray()
-        {
-            return outputQueue.ToArray();
+            return operatorStack.Peek().getTokenType() == Token.TokenType.LeftBrace;
         }
     }
 }

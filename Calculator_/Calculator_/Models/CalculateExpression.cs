@@ -21,22 +21,26 @@ namespace Calculator_.Models
                     operandStack.Push(token);
                 else
                 {
-                    if (operandStack.Count < token.ParamCount)
+                    if (operandStack.Count < token.getParameterCount())
                     {
                         throw new Exception("user has not input sufficient values  in  the expression");
                     }
                     List<Token> operands = new List<Token>();
-                    for (int i = 0; i < token.ParamCount; i++)
+                    for (int i = 0; i < token.getParameterCount(); i++)
                     {
                         operands.Add(operandStack.Pop());
                     }
                     operandStack.Push(EvaluateOperator(token, operands));
+
+                    //Operator op = new Operator(token.getSymbol().ToString());
+                    //Operand first = new Operand(Convert.ToDouble(operands[0]));
+                    //Operand second = new Operand(Convert.ToDouble(operands[1])); 
                 }
                 index++;
             }
             if (operandStack.Count == 1)
             {
-                 result =operandStack.Pop().TokenValue;
+                 result =operandStack.Pop().getTokenValue();
             }
             else
             {
@@ -50,22 +54,22 @@ namespace Calculator_.Models
          
         private Token EvaluateOperator(Token oper, List<Token> operands)
         {   
-            switch (oper.Symbol.ToString())
+            switch (oper.getSymbol())
             {
-                case "+":                 
-                      operands[0].TokenValue += operands[1].TokenValue;              
+                case '+':                 
+                      operands[0].TokenValue += operands[1].getTokenValue();              
                     break;
-                case "-":
-                    operands[0].TokenValue = operands[1].TokenValue - operands[0].TokenValue;
+                case '-':
+                    operands[0].TokenValue = operands[1].getTokenValue() - operands[0].getTokenValue();
                     break;
-                case "*":
-                    operands[0].TokenValue *= operands[1].TokenValue;
+                case '*':
+                    operands[0].TokenValue *= operands[1].getTokenValue();
                     break;
-                case "/":
-                    operands[0].TokenValue = operands[1].TokenValue / operands[0].TokenValue;
+                case '/':
+                    operands[0].TokenValue = operands[1].getTokenValue() / operands[0].getTokenValue();
                     break;
-                case "_":
-                    operands[0].TokenValue = -operands[0].TokenValue;
+                case '_':
+                    operands[0].TokenValue = -operands[0].getTokenValue();
                     break;
 
                 default:
@@ -75,6 +79,5 @@ namespace Calculator_.Models
             return operands[0];
         }
     }
-
-    }
+}
 
