@@ -23,7 +23,8 @@ namespace Calculator_.Models
                 {
                     if (operandStack.Count < token.getParameterCount())
                     {
-                        throw new Exception("user has not input sufficient values  in  the expression");
+                        //throw new Exception("user has not input sufficient values  in  the expression");
+                        return;
                     }
                     List<Token> operands = new List<Token>();
                     for (int i = 0; i < token.getParameterCount(); i++)
@@ -31,10 +32,6 @@ namespace Calculator_.Models
                         operands.Add(operandStack.Pop());
                     }
                     operandStack.Push(EvaluateOperator(token, operands));
-
-                    //Operator op = new Operator(token.getSymbol().ToString());
-                    //Operand first = new Operand(Convert.ToDouble(operands[0]));
-                    //Operand second = new Operand(Convert.ToDouble(operands[1])); 
                 }
                 index++;
             }
@@ -44,7 +41,8 @@ namespace Calculator_.Models
             }
             else
             {
-                throw new Exception("ddd");
+                //throw new Exception("ddd");
+                return;
             }
         } 
         public double getAnswer()

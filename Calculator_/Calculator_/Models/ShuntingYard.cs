@@ -54,7 +54,8 @@ namespace Calculator_.Models
             {
                 if (isFirstTokenOnStackLeftBrace() || isFirstTokenOnStackRightBrace())
                 {
-                    throw new Exception("Mismatched parentheses");
+                  //  throw new Exception("Mismatched parentheses");
+                    return;
                 }
                 popFromStackAndPushOnQueue();
             }

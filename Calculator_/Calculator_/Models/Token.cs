@@ -50,6 +50,7 @@ namespace Calculator_.Models
             return parameterCount;
         }
 
+
         public double getTokenValue()
         {
             return tokenValue;
@@ -110,6 +111,11 @@ namespace Calculator_.Models
             this.assoc = assoc;
             this.precedence = precedence;
             this.parameterCount = parameterCount;
+        }
+
+        public void setSymbol(char sy)
+        {
+            symbol = sy;
         }
         public static Token stringToToken(string str) // ovjd eposaljemo citav input i izracunamo
         {

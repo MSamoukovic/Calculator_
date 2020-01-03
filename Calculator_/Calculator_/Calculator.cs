@@ -18,76 +18,59 @@ namespace Calculator_
             InitializeComponent();         
         }
 
-        public double answer { get; set; }
+        Input input = new Input();
+        double answer;
+        string updatedInput;
 
         private void operatorClick(object sender, EventArgs e)
         {
             Button operatorButton = (Button)sender;
-            if (expressionTextBox.Text.Length == 0)
-            {
-                addText("0");
-                expressionTextBox.Text+=operatorButton.Text;
-            }
-            else 
-            {
-                string lastCharacter = expressionTextBox.Text.Substring(expressionTextBox.Text.Length - 1);
-                           
-                if (lastCharacter == "+" || lastCharacter == "-" || lastCharacter == "*" || lastCharacter == "/")
-                {
-                    string penultimateCharacter = expressionTextBox.Text.Substring(expressionTextBox.Text.Length - 2,1);
-                    if ((lastCharacter == "+" || lastCharacter == "-") && penultimateCharacter == "(" && (operatorButton.Text=="*" || operatorButton.Text=="/"))
-                       return;
-                    expressionTextBox.Text = expressionTextBox.Text.Remove(expressionTextBox.Text.Length - 1, 1);
-                    expressionTextBox.Text += operatorButton.Text;
-                }
-                else if (lastCharacter == "(" && (operatorButton.Text == "*" || operatorButton.Text == "/"))
-                    expressionTextBox.Text = expressionTextBox.Text;
-                else
-                    expressionTextBox.Text += operatorButton.Text;
-            }
+            updatedInput = input.setText(operatorButton.Text);
+            expressionTextBox.Text = updatedInput;
+            numberTextBox.Text = "";
         }
 
         private void numberClick(object sender, EventArgs e)
         {
             Button numberButton = (Button)sender;
-            addText(numberButton.Text);          
-        }
-
-        public void addText(string numberText)
-        {
-            numberTextBox.Text = numberText;
-            expressionTextBox.Text += numberText;
+            updatedInput = input.setNumber(numberButton.Text);
+            expressionTextBox.Text = updatedInput;
+            numberTextBox.ForeColor = Color.DarkGray;
+            getAnswer();
         }
 
         private void equallyButton_Click(object sender, EventArgs e)
         {
-            int countRightBrace = 0, countLeftBrace = 0;
-            countBraces(out countRightBrace, out countLeftBrace);
-
             try
             {
-                if (countLeftBrace > countRightBrace)
-                {
-                    for (int i = 0; i < countLeftBrace - countRightBrace; i++)
-                        expressionTextBox.Text += ")";
-                }
-             
-               
-                Tokenize inputTokenize = new Tokenize(expressionTextBox.Text);
-                Token[] tokens = inputTokenize.getArrayOfTokens();
- 
-                ShuntingYard  sy = new ShuntingYard(tokens);
-                tokens = sy.getArray();
-
-                CalculateExpression calculate = new CalculateExpression(tokens);
-                answer = calculate.getAnswer();
-
-                numberTextBox.Text = answer.ToString();
-
+                updatedInput = input.setResult();
+                expressionTextBox.Text = updatedInput;
+                getAnswer();
+                expressionTextBox.Text = answer.ToString();
+                input.setInputIsEmpty();
+                updatedInput = input.setNumber(answer.ToString());
             }
             catch (Exception f)
             {
                 Console.WriteLine(f.Message);
+            }
+        }
+
+        private void getAnswer()
+        {
+           if(input.countLeftBraces()!=input.countRightBraces())
+                numberTextBox.Text = "";
+           else
+            {
+                Tokenize inputTokenize = new Tokenize(updatedInput);
+                Token[] tokens = inputTokenize.getArrayOfTokens();
+
+                ShuntingYard sy = new ShuntingYard(tokens);
+                tokens = sy.getArray();
+
+                CalculateExpression calculate = new CalculateExpression(tokens);
+                answer = calculate.getAnswer();
+                numberTextBox.Text = answer.ToString();
             }
         }
 
@@ -96,42 +79,50 @@ namespace Calculator_
             numberTextBox.Clear();
             expressionTextBox.Clear();
             answer = 0;
+            input.setInputIsEmpty();
         }
 
         private void braceClick(object sender, EventArgs e)
         {
             Button braceButton = (Button)sender;
-            int countRightBrace, countLeftBrace;
-            countBraces(out countRightBrace, out countLeftBrace);
-
-            if (expressionTextBox.Text.Length != 0)
+            updatedInput = input.setBraces(braceButton.Text);
+            expressionTextBox.Text = updatedInput;
+            if (input.countLeftBraces() > input.countRightBraces())
             {
-                string lastCharacter = expressionTextBox.Text.Substring(expressionTextBox.Text.Length - 1);
-
-                if (lastCharacter == numberTextBox.Text && braceButton.Text == "(")
-                    expressionTextBox.Text += "*";
-                else if (lastCharacter == "(" && braceButton.Text == ")") //ako imamo ()
-                {
-                    expressionTextBox.Text = expressionTextBox.Text.Remove(expressionTextBox.Text.Length - 1, 1);
-                    return;
-                }
-                else if (braceButton.Text == ")" && countLeftBrace == countRightBrace)
-                    return;
+                numberTextBox.Text = "";
+                return;
             }
-            expressionTextBox.Text += braceButton.Text;
+            else if (input.countLeftBraces() == input.countRightBraces())
+                getAnswer();
         }
 
-        private void countBraces(out int countRightBrace, out int countLeftBrace)
+        private void changeSign_Click(object sender, EventArgs e)
         {
-            countRightBrace = 0;
-            countLeftBrace = 0;
-            foreach (char c in expressionTextBox.Text)
-            {
-                if (c == ')')
-                    countRightBrace++;
-                else if (c == '(')
-                    countLeftBrace++;
-            }
+           
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+
+            //for (int i =0; i<tokens.Length;i++)
+            //Console.WriteLine(tokens[i].getTokenValue());
+
+            Token lastItem = tokens[tokens.Length - 1];
+            Console.WriteLine(lastItem.getTokenValue());
+            Console.WriteLine(lastItem.getTokenType());
+           lastItem.setValues('_', Token.Associativity.Right, 1, 30);
+
+
+
+
+
+
+            ShuntingYard sy = new ShuntingYard(tokens);
+            tokens = sy.getArray();
+
+            CalculateExpression calculate = new CalculateExpression(tokens);
+            answer = calculate.getAnswer();
+            numberTextBox.Text = answer.ToString();
+
+
         }
     }
 }

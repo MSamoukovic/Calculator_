@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculator));
-            this.right = new System.Windows.Forms.Button();
             this.left = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.expressionTextBox = new System.Windows.Forms.TextBox();
@@ -45,27 +44,16 @@
             this.nineButton = new System.Windows.Forms.Button();
             this.eightButton = new System.Windows.Forms.Button();
             this.sevenButton = new System.Windows.Forms.Button();
+            this.right = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
             this.divideButton = new System.Windows.Forms.Button();
             this.multiplyButton = new System.Windows.Forms.Button();
             this.subtractButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.equallyButton = new System.Windows.Forms.Button();
-            this.changePrecedence = new System.Windows.Forms.Button();
+            this.changeSign = new System.Windows.Forms.Button();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // right
-            // 
-            this.right.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.right.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.right.Location = new System.Drawing.Point(171, 69);
-            this.right.Name = "right";
-            this.right.Size = new System.Drawing.Size(74, 61);
-            this.right.TabIndex = 10;
-            this.right.Text = ")";
-            this.right.UseVisualStyleBackColor = false;
-            this.right.Click += new System.EventHandler(this.braceClick);
             // 
             // left
             // 
@@ -107,7 +95,7 @@
             this.tableLayoutPanel2.Controls.Add(this.subtractButton, 3, 4);
             this.tableLayoutPanel2.Controls.Add(this.addButton, 3, 5);
             this.tableLayoutPanel2.Controls.Add(this.equallyButton, 3, 6);
-            this.tableLayoutPanel2.Controls.Add(this.changePrecedence, 2, 6);
+            this.tableLayoutPanel2.Controls.Add(this.changeSign, 2, 6);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(22, 22);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 7;
@@ -136,8 +124,10 @@
             // 
             // numberTextBox
             // 
+            this.numberTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.tableLayoutPanel2.SetColumnSpan(this.numberTextBox, 4);
             this.numberTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F);
+            this.numberTextBox.ForeColor = System.Drawing.Color.Black;
             this.numberTextBox.Location = new System.Drawing.Point(3, 36);
             this.numberTextBox.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
             this.numberTextBox.Name = "numberTextBox";
@@ -279,6 +269,18 @@
             this.sevenButton.UseVisualStyleBackColor = false;
             this.sevenButton.Click += new System.EventHandler(this.numberClick);
             // 
+            // right
+            // 
+            this.right.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.right.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.right.Location = new System.Drawing.Point(171, 69);
+            this.right.Name = "right";
+            this.right.Size = new System.Drawing.Size(74, 61);
+            this.right.TabIndex = 10;
+            this.right.Text = ")";
+            this.right.UseVisualStyleBackColor = false;
+            this.right.Click += new System.EventHandler(this.braceClick);
+            // 
             // clearButton
             // 
             this.clearButton.BackColor = System.Drawing.Color.Gainsboro;
@@ -353,16 +355,17 @@
             this.equallyButton.UseVisualStyleBackColor = false;
             this.equallyButton.Click += new System.EventHandler(this.equallyButton_Click);
             // 
-            // changePrecedence
+            // changeSign
             // 
-            this.changePrecedence.BackColor = System.Drawing.Color.Silver;
-            this.changePrecedence.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.changePrecedence.Location = new System.Drawing.Point(171, 344);
-            this.changePrecedence.Name = "changePrecedence";
-            this.changePrecedence.Size = new System.Drawing.Size(74, 62);
-            this.changePrecedence.TabIndex = 19;
-            this.changePrecedence.Text = "+/-";
-            this.changePrecedence.UseVisualStyleBackColor = false;
+            this.changeSign.BackColor = System.Drawing.Color.Silver;
+            this.changeSign.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.changeSign.Location = new System.Drawing.Point(171, 344);
+            this.changeSign.Name = "changeSign";
+            this.changeSign.Size = new System.Drawing.Size(74, 62);
+            this.changeSign.TabIndex = 19;
+            this.changeSign.Text = "+/-";
+            this.changeSign.UseVisualStyleBackColor = false;
+            this.changeSign.Click += new System.EventHandler(this.changeSign_Click);
             // 
             // Calculator
             // 
@@ -383,8 +386,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button right;
         private System.Windows.Forms.Button left;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button equallyButton;
@@ -406,7 +407,8 @@
         private System.Windows.Forms.Button multiplyButton;
         private System.Windows.Forms.TextBox numberTextBox;
         private System.Windows.Forms.TextBox expressionTextBox;
-        private System.Windows.Forms.Button changePrecedence;
+        private System.Windows.Forms.Button changeSign;
+        private System.Windows.Forms.Button right;
     }
 }
 
