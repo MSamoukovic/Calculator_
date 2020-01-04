@@ -49,13 +49,11 @@ namespace Calculator_.Models
 
                 else if (lastCharacter == "(" && braceButtonText == ")") //ako imamo ()
                     expressionText = expressionText.Remove(expressionText.Length - 1, 1);
-
+                else if (lastCharacter == ")" && countLeftBraces() > countRightBraces())
+                    expressionText += ")";
                 else if (braceButtonText == ")" && countLeftBraces() >= countRightBraces() && lastCharacter != isNumberTheLastCharacter(char.Parse(lastCharacter))) { }
 
-                else if (braceButtonText == ")" && countLeftBraces() ==0 ) { }
-
-                else if (lastCharacter == "*" && countLeftBraces() > countRightBraces())
-                    expressionText += "0)";
+                else if (braceButtonText == ")" && countLeftBraces() == 0) { }
 
                 else if (lastCharacter != isNumberTheLastCharacter(char.Parse(lastCharacter)) && braceButtonText == "(")
                     expressionText += "(";
@@ -70,32 +68,15 @@ namespace Calculator_.Models
             return expressionText += braceButtonText;
         }
 
-        public string changeSign()
-        {
-            if (!String.IsNullOrEmpty(expressionText))
-            {
-                string lastCharacter = expressionText.Substring(expressionText.Length - 1);
-                if (expressionText.Length>2)
-                {
-                    string penultimateCharacter = expressionText.Substring(expressionText.Length - 2, 1);
-                    string theThirdFromTheEnd = expressionText.Substring(expressionText.Length - 3, 1);
-                    if (lastCharacter == isNumberTheLastCharacter(char.Parse(lastCharacter)) && penultimateCharacter == "-" && theThirdFromTheEnd == "(")
-                    {
-                        expressionText = expressionText.Replace( "(-" + lastCharacter, lastCharacter);
-                        return expressionText;
-                    }
-                }
-                if (lastCharacter == isNumberTheLastCharacter(char.Parse(lastCharacter)))
-                expressionText = expressionText.Replace(lastCharacter, "(-" + lastCharacter);
-                return expressionText;
-            }
-            return expressionText;
-        }
-
         public string setNumber(string numberButtonText)
         {
             expressionText += numberButtonText;
             return expressionText;
+        }
+
+        public string updateExpressionText(string updateString)
+        {
+            return expressionText = updateString;
         }
 
         public string setResult()
