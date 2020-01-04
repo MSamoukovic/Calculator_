@@ -165,7 +165,6 @@ namespace Calculator_
                     int x = updatedInput.Length;
                     updatedInput = updatedInput.Insert(x - getLastValue().Length, "(-");
                 }
-
                 updatedInput = input.updateExpressionText(updatedInput);
                 expressionTextBox.Text = updatedInput;
                 ShuntingYard sy = new ShuntingYard(tokens);
@@ -176,7 +175,6 @@ namespace Calculator_
 
                 getAnswer();
                 numberTextBox.Text = answer.ToString();
-              
             }
         }
 
