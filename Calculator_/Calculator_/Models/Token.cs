@@ -8,12 +8,13 @@ namespace Calculator_.Models
 {
      class Token
     {
-        public enum TokenType 
+      
+        public  enum TokenType 
         { 
             Number,
             Operator,
-            LeftBrace, 
-            RightBrace,
+            LeftBracket, 
+            RightBracket,
             Nothing
         }
 
@@ -32,10 +33,15 @@ namespace Calculator_.Models
         int precedence;
         int parameterCount;
 
-        public TokenType getTokenType()
+        public  TokenType getTokenType()
         {
             return tokenType;
         }
+
+        //public static TokenType getTokenType(string str)
+        //{
+        //    return TokenType.Operator;
+        //}
 
         public char getSymbol()
         {
@@ -56,7 +62,7 @@ namespace Calculator_.Models
             return tokenValue;
         }
 
-        public bool isNumber()
+        public  bool isNumber()
         {
             if (tokenType == TokenType.Number)
                 return true;
@@ -72,14 +78,14 @@ namespace Calculator_.Models
 
         public bool isLeftBrace()
         {
-            if (tokenType == TokenType.LeftBrace)
+            if (tokenType == TokenType.LeftBracket)
                 return true;
             return false;
         }
 
         public bool isRightBrace()
         {
-            if (tokenType == TokenType.RightBrace)
+            if (tokenType == TokenType.RightBracket)
                 return true;
             return false;
         }
@@ -126,11 +132,11 @@ namespace Calculator_.Models
             }
             else if (str == "(")
             {
-                token.tokenType = TokenType.LeftBrace;
+                token.tokenType = TokenType.LeftBracket;
             }
             else if (str == ")")
             {
-                token.tokenType = TokenType.RightBrace;
+                token.tokenType = TokenType.RightBracket;
             }
             else
             {

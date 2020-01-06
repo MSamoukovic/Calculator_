@@ -55,7 +55,7 @@ namespace Calculator_.Models
 
         private bool isPenultimateTokenInListLeftBrace()
         {
-            return tokens[tokens.Count - 1].getTokenType() == Token.TokenType.LeftBrace;
+            return tokens[tokens.Count - 1].getTokenType() == Token.TokenType.LeftBracket;
         }
 
         private bool isTokenListEmpty()

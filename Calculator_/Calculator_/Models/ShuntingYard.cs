@@ -29,11 +29,11 @@ namespace Calculator_.Models
                         seePriorityAndPushOnStackOrOnQueue(token);
                         break;
 
-                    case TokenType.LeftBrace:
+                    case TokenType.LeftBracket:
                         pushOnStack(token);
                         break;
 
-                    case TokenType.RightBrace:
+                    case TokenType.RightBracket:
                         popFromStackAllTokensAndStopWhenLeftBraceAppeard();
                         break;
                     default:
@@ -144,12 +144,12 @@ namespace Calculator_.Models
      
         private  bool isFirstTokenOnStackRightBrace()
         {
-            return operatorStack.Peek().getTokenType() == Token.TokenType.RightBrace;
+            return operatorStack.Peek().getTokenType() == Token.TokenType.RightBracket;
         }
 
         private  bool isFirstTokenOnStackLeftBrace()
         {
-            return operatorStack.Peek().getTokenType() == Token.TokenType.LeftBrace;
+            return operatorStack.Peek().getTokenType() == Token.TokenType.LeftBracket;
         }
     }
 }

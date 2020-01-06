@@ -61,6 +61,7 @@
     <Compile Include="Models\MultiplyExpr.cs" />
     <Compile Include="Models\Operand.cs" />
     <Compile Include="Models\Operator.cs" />
+    <Compile Include="Models\Result.cs" />
     <Compile Include="Models\ShuntingYard.cs" />
     <Compile Include="Models\SubtractExpr.cs" />
     <Compile Include="Models\Token.cs" />

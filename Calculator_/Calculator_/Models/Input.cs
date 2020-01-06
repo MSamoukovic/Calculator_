@@ -9,74 +9,19 @@ namespace Calculator_.Models
     class Input
     {
         string expressionText;
+
         public Input()
         {
-
-        }
-        public string setText(string operatorButtonText)
-        {
-            if (String.IsNullOrEmpty(expressionText))
-                expressionText += "0" + operatorButtonText;
-            else
-            {
-                string lastCharacter = expressionText.Substring(expressionText.Length - 1);
-                if (lastCharacter == "+" || lastCharacter == "-" || lastCharacter == "*" || lastCharacter == "/")
-                {
-                    string penultimateCharacter = expressionText.Substring(expressionText.Length - 2, 1);
-                    if ((lastCharacter == "+" || lastCharacter == "-") && penultimateCharacter == "(" && (operatorButtonText == "*" || operatorButtonText == "/"))
-                         return expressionText ;
-
-                        expressionText = expressionText.Remove(expressionText.Length - 1, 1);
-                        expressionText += operatorButtonText;
-                    
-                }
-                else if (lastCharacter == "(" && (operatorButtonText == "*" || operatorButtonText == "/"))
-                     return expressionText;
-                else
-                    expressionText += operatorButtonText;
-            }
-            return expressionText;
         }
 
-        public string setBraces(string braceButtonText)
+        public string setNumber(string number)
         {
-            if (!String.IsNullOrEmpty(expressionText))
-            {
-                string lastCharacter = expressionText.Substring(expressionText.Length - 1);
-
-                if (lastCharacter == isNumberTheLastCharacter(char.Parse(lastCharacter)) && braceButtonText == "(") // 3( ----> 3*(
-                    expressionText += "*(";
-
-                else if (lastCharacter == "(" && braceButtonText == ")") //ako imamo ()
-                    expressionText = expressionText.Remove(expressionText.Length - 1, 1);
-                else if (lastCharacter == ")" && countLeftBraces() > countRightBraces())
-                    expressionText += ")";
-                else if (braceButtonText == ")" && countLeftBraces() >= countRightBraces() && lastCharacter != isNumberTheLastCharacter(char.Parse(lastCharacter))) { }
-
-                else if (braceButtonText == ")" && countLeftBraces() == 0) { }
-
-                else if (lastCharacter != isNumberTheLastCharacter(char.Parse(lastCharacter)) && braceButtonText == "(")
-                    expressionText += "(";
-                else
-                    expressionText += braceButtonText;
-
+            if (number == "." && isExpressionEmpty())
+                return expressionText = "0" + number;
+            else if (itStartAtZero(number))
                 return expressionText;
-            }
-            else if (String.IsNullOrEmpty(expressionText) && braceButtonText == ")")
-                return expressionText=String.Empty;
-            else
-            return expressionText += braceButtonText;
-        }
-
-        public string setNumber(string numberButtonText)
-        {
-            expressionText += numberButtonText;
-            return expressionText;
-        }
-
-        public string updateExpressionText(string updateString)
-        {
-            return expressionText = updateString;
+             else
+                return expressionText += number;
         }
 
         public string setResult()
@@ -84,20 +29,85 @@ namespace Calculator_.Models
             int leftBraces = countLeftBraces();
             int rightBraces = countRightBraces();
 
-            if (!String.IsNullOrEmpty(expressionText))
+            if (!isExpressionEmpty())
             {
-                string lastCharacter = expressionText.Substring(expressionText.Length - 1);
-                if (lastCharacter != isNumberTheLastCharacter(char.Parse(lastCharacter)) && lastCharacter!=")")
-                     expressionText += "0";
-                 if (leftBraces > rightBraces)
+                char lastCharacter = getLastCharacter();
+                if (!isNumberTheLastCharacter(lastCharacter) && !isRightBracket(lastCharacter))
+                    expressionText += "0";
+                if (leftBraces > rightBraces)
                 {
                     for (int i = 0; i < leftBraces - rightBraces; i++)
-                         expressionText += ")";
+                        expressionText += ")";
                 }
-                 if(expressionText.Contains("(+"))
-                    expressionText = expressionText.Replace("(+","(0+"); 
+                if (expressionText.Contains("(+"))
+                    expressionText = expressionText.Replace("(+", "(0+");
             }
             return expressionText;
+        }
+
+        public string setOperator(string oper)
+        {
+            if (isExpressionEmpty())
+            addToExpression("0"+oper);
+            else
+            {
+                char lastCharacter = getLastCharacter();
+                if (isOperator(lastCharacter))
+                {
+                    char penultimateCharacter = char.Parse(expressionText.Substring(expressionText.Length - 2, 1));
+                    if (isPlusOrMinus(lastCharacter) && isLeftBracket(penultimateCharacter) && isTimesOrDivided(oper))
+                        return expressionText;
+                    else
+                    {
+                        removeLastCharacter();
+                        addToExpression(oper);
+                    }
+                }
+                else if (isLeftBracket(lastCharacter) && isTimesOrDivided(oper))
+                    return expressionText;
+                else
+                    addToExpression(oper);
+            }
+            return expressionText;
+        }
+
+        public string setBracket(char bracket)
+        {
+            if (!isExpressionEmpty())
+            {
+                char lastCharacter = getLastCharacter();
+
+                if (isNumberTheLastCharacter(lastCharacter) && isLeftBracket(bracket)) 
+                addToExpression("*(");
+
+                else if (isLeftBracket(lastCharacter) && isRightBracket(bracket))
+                    removeLastCharacter();
+
+                else if (isRightBracket(lastCharacter) && countLeftBraces() > countRightBraces())
+                    addToExpression(")");
+
+
+                else if (isRightBracket(bracket) && countLeftBraces() >= countRightBraces() && !isNumberTheLastCharacter(lastCharacter)) { }
+
+                else if (isRightBracket(bracket) && countLeftBraces() == 0) { }
+
+                else if (!isNumberTheLastCharacter(lastCharacter) && isLeftBracket(bracket))
+                    addToExpression("(");
+
+                else
+                    addToExpression(bracket.ToString());
+
+                return expressionText;
+            }
+            else if (isExpressionEmpty() && isRightBracket(bracket))
+                return expressionText=String.Empty;
+            else
+            return expressionText += bracket;
+        }
+       
+        public string updateExpressionText(string updateString)
+        {
+            return expressionText = updateString;
         }
         
         public void setInputIsEmpty()
@@ -113,7 +123,7 @@ namespace Calculator_.Models
                 if (c == '(')
                     countLeftBraces++;
             }
-            return countLeftBraces++; 
+            return countLeftBraces; 
         }
 
         public int countRightBraces( )
@@ -124,15 +134,63 @@ namespace Calculator_.Models
                 if (c == ')')
                     countRightBraces++;
             }
-            return countRightBraces++;
+            return countRightBraces;
         }
 
-        private string isNumberTheLastCharacter(char lastCharacter)
+        private void addToExpression(string text)
+        {
+            expressionText += text;
+        }
+
+        private void removeLastCharacter()
+        {
+            expressionText = expressionText.Remove(expressionText.Length - 1, 1);
+        }
+
+        private char getLastCharacter()
+        {
+            return char.Parse(expressionText.Substring(expressionText.Length - 1));
+        }
+
+        private bool isExpressionEmpty()
+        {
+            return String.IsNullOrEmpty(expressionText);
+        }
+
+        private bool itStartAtZero(string number)
+        {
+            return expressionText == "0" && number == "0";
+        }
+
+        private bool isNumberTheLastCharacter(char lastCharacter)
         {
             if (lastCharacter >= '0' && lastCharacter <= '9')
-                return lastCharacter.ToString();          
-            return "";
+                return true;
+            return false;
 
+        }
+        private static bool isRightBracket(char bracket)
+        {
+            return bracket == ')';
+        }
+        private static bool isLeftBracket(char bracket)
+        {
+            return bracket == '(';
+        }
+
+        private static bool isTimesOrDivided(string operatorButtonText)
+        {
+            return operatorButtonText == "*" || operatorButtonText == "/";
+        }
+
+        private static bool isPlusOrMinus(char lastCharacter)
+        {
+            return lastCharacter == '+' || lastCharacter == '-';
+        }
+
+        private static bool isOperator(char lastCharacter)
+        {
+            return lastCharacter == '+' || lastCharacter == '-' || lastCharacter == '*' || lastCharacter == '/';
         }
     }
 }

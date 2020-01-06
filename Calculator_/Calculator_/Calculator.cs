@@ -19,13 +19,14 @@ namespace Calculator_
         }
 
         Input input = new Input();
-        double answer;
+        string answer;
         string updatedInput;
-        
+        Result result = new Result(); 
+
         private void operatorClick(object sender, EventArgs e)
         {
             Button operatorButton = (Button)sender;
-            updatedInput = input.setText(operatorButton.Text);
+            updatedInput = input.setOperator(operatorButton.Text);
             expressionTextBox.Text = updatedInput;
             numberTextBox.Text = "";
         }
@@ -36,19 +37,34 @@ namespace Calculator_
             updatedInput = input.setNumber(numberButton.Text);
             expressionTextBox.Text = updatedInput;
             numberTextBox.ForeColor = Color.DarkGray;
-            getAnswer();
+
+            if (input.countLeftBraces() != input.countRightBraces())
+                numberTextBox.Text = "";
+            else
+            {
+                Tokenize inputTokenize = new Tokenize(updatedInput);
+                Token[] tokens = inputTokenize.getArrayOfTokens();
+
+                numberTextBox.Text = result.getResult(tokens);
+               if( result.isNumberHaveADot(tokens,updatedInput,expressionTextBox)==true)
+                    dotButton.Enabled = false;
+               else
+                    dotButton.Enabled = true;
+            }
         }
 
         private void equallyButton_Click(object sender, EventArgs e)
         {
             try
             {
+                Tokenize inputTokenize = new Tokenize(updatedInput);
+                Token[] tokens = inputTokenize.getArrayOfTokens();
                 updatedInput = input.setResult();
-                expressionTextBox.Text = updatedInput;
                 getAnswer();
-                expressionTextBox.Text = answer.ToString();
                 input.setInputIsEmpty();
                 updatedInput = input.setNumber(answer.ToString());
+                expressionTextBox.Text = answer;
+
             }
             catch (Exception f)
             {
@@ -64,20 +80,16 @@ namespace Calculator_
             {
                 Tokenize inputTokenize = new Tokenize(updatedInput);
                 Token[] tokens = inputTokenize.getArrayOfTokens();
-                ShuntingYard sy = new ShuntingYard(tokens);
-                tokens = sy.getArray();
-                CalculateExpression calculate = new CalculateExpression(tokens);
-                answer = calculate.getAnswer();
-                numberTextBox.Text = answer.ToString();
+                answer = result.getResult(tokens);
+                numberTextBox.Text = answer;
             }
         }
-
 
         private void clearButton_Click(object sender, EventArgs e)
         {
             numberTextBox.Clear();
             expressionTextBox.Clear();
-            answer = 0;
+            answer = "";
             input.setInputIsEmpty();
             updatedInput = "";
         }
@@ -85,28 +97,20 @@ namespace Calculator_
         private void braceClick(object sender, EventArgs e)
         {
             Button braceButton = (Button)sender;
-            updatedInput = input.setBraces(braceButton.Text);
+            updatedInput = input.setBracket(char.Parse(braceButton.Text));
             expressionTextBox.Text = updatedInput;
-
-            Console.WriteLine(updatedInput);
-            if (input.countLeftBraces() > input.countRightBraces())
-            {
-                numberTextBox.Text = "";
-                return;
-            }
-            else if (input.countLeftBraces() == input.countRightBraces())
-                getAnswer();
+            getAnswer();
         }
 
-
-        private string getLast()
+        private string getLastTokenType()
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
             Token lastItem = tokens[tokens.Length - 1];
             return lastItem.getTokenType().ToString();
         }
-        private string getLastValue()
+
+        private string getLastTokenValue()
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
@@ -114,7 +118,7 @@ namespace Calculator_
             return lastItem.getTokenValue().ToString();
         }
 
-        private string getPenultimate()
+        private string getPenultimateTokenType()
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
@@ -122,7 +126,7 @@ namespace Calculator_
             return penultmateToken.getTokenType().ToString();
         }
 
-        private string getTheThirdFromTheEnd()
+        private string getTheThirdFromTheEndTokenType()
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
@@ -132,56 +136,55 @@ namespace Calculator_
 
         private void changeSign_Click(object sender, EventArgs e)
         {
+
             if (String.IsNullOrEmpty(updatedInput))
-                return;
+                updatedInput = "(-";
             else
             {
                 Tokenize inputTokenize = new Tokenize(updatedInput);
                 Token[] tokens = inputTokenize.getArrayOfTokens();
+                int inputLength = updatedInput.Length;
 
-                if (tokens.Length >= 3)
-                {
-                     if (getTheThirdFromTheEnd() == "LeftBrace" && getPenultimate() == "Operator" && getLast()!="Operator")
-                    {
-                        int x = updatedInput.Length;
-                        updatedInput = updatedInput.Remove(x - getLastValue().Length - 2, 2);
-                        updatedInput = input.updateExpressionText(updatedInput);
-                    }
-                    else if (getTheThirdFromTheEnd() == "Operator" && getPenultimate() == "Number" && getLast() == "Operator")
-                    {
-                        updatedInput += "(-";
-                        expressionTextBox.Text= updatedInput;
-                        updatedInput = input.updateExpressionText(updatedInput);
-                    }
-                    else
-                    {
-                        int x = updatedInput.Length;
-                        updatedInput = updatedInput.Insert(x - getLastValue().Length, "(-");
-                        updatedInput = input.updateExpressionText(updatedInput);
-                    }
-                }
-                else if (tokens.Length == 1)
-                {
-                    int x = updatedInput.Length;
-                    updatedInput = updatedInput.Insert(x - getLastValue().Length, "(-");
-                }
-                updatedInput = input.updateExpressionText(updatedInput);
-                expressionTextBox.Text = updatedInput;
-                ShuntingYard sy = new ShuntingYard(tokens);
-                tokens = sy.getArray();
-                CalculateExpression calculate = new CalculateExpression(tokens);
-                answer = calculate.getAnswer();
-                numberTextBox.Text = answer.ToString();
+                if (tokens.Length == 1)
+                   addADifferentSignBeforeALastumber();
 
-                getAnswer();
-                numberTextBox.Text = answer.ToString();
+                else if (getPenultimateTokenType() == "LeftBracket" && getLastTokenValue()=="")
+                    updatedInput = updatedInput.Remove(inputLength - 2, 2);
+
+                else if (getLastTokenType() == "Number" && isPenultimateTokenPlus())
+                    addADifferentSignBeforeALastumber();
+
+                else if (getLastTokenType() == "Number" && getTheThirdFromTheEndTokenType() == "LeftBracket")
+                    updatedInput = updatedInput.Remove(inputLength - 2-getLastTokenValue().Length, 2);
+
+                else if (getLastTokenType() == "Number")
+                    addADifferentSignBeforeALastumber();
+
+                else
+                {
+                    updatedInput += "(-";
+                    numberTextBox.Text = result.getResult(tokens);
+                }
+
             }
+            updatedInput = input.updateExpressionText(updatedInput);
+            expressionTextBox.Text = updatedInput;
         }
 
+        private string addADifferentSignBeforeALastumber()
+        {
+            updatedInput= updatedInput.Insert(updatedInput.Length - getLastTokenValue().Length, "(-");
+            return updatedInput;
+        }
 
+        private bool isPenultimateTokenPlus()
+        {
+            return updatedInput[updatedInput.Length - 2] == '+';
+        }
 
-
-
-           
+        private bool isLastTokenMinus()
+        {
+            return updatedInput[updatedInput.Length - 1] == '-';
+        }
     }
 }
