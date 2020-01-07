@@ -65,7 +65,7 @@
             this.left.TabIndex = 9;
             this.left.Text = "(";
             this.left.UseVisualStyleBackColor = false;
-            this.left.Click += new System.EventHandler(this.braceClick);
+            this.left.Click += new System.EventHandler(this.bracketClick);
             // 
             // tableLayoutPanel2
             // 
@@ -279,7 +279,7 @@
             this.right.TabIndex = 10;
             this.right.Text = ")";
             this.right.UseVisualStyleBackColor = false;
-            this.right.Click += new System.EventHandler(this.braceClick);
+            this.right.Click += new System.EventHandler(this.bracketClick);
             // 
             // clearButton
             // 

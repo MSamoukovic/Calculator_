@@ -17,11 +17,13 @@ namespace Calculator_.Models
         public string setNumber(string number)
         {
             if (number == "." && isExpressionEmpty())
-                return expressionText = "0" + number;
-            else if (itStartAtZero(number))
-                return expressionText;
-             else
-                return expressionText += number;
+                expressionText = "0" + number;
+            else if (itStartAtZero(number)) { }
+            else if (!isExpressionEmpty() && isRightBracket(getLastCharacter()))
+                addToExpression("*"+number);
+            else
+                addToExpression(number);
+            return expressionText;
         }
 
         public string setResult()
@@ -33,11 +35,11 @@ namespace Calculator_.Models
             {
                 char lastCharacter = getLastCharacter();
                 if (!isNumberTheLastCharacter(lastCharacter) && !isRightBracket(lastCharacter))
-                    expressionText += "0";
+                   addToExpression("0");
                 if (leftBraces > rightBraces)
                 {
                     for (int i = 0; i < leftBraces - rightBraces; i++)
-                        expressionText += ")";
+                        addToExpression(")");
                 }
                 if (expressionText.Contains("(+"))
                     expressionText = expressionText.Replace("(+", "(0+");
@@ -45,58 +47,131 @@ namespace Calculator_.Models
             return expressionText;
         }
 
-        public string setOperator(string oper)
+        public string setOperator(string op)
         {
             if (isExpressionEmpty())
-            addToExpression("0"+oper);
+            addToExpression("0"+op);
             else
             {
                 char lastCharacter = getLastCharacter();
                 if (isOperator(lastCharacter))
                 {
-                    char penultimateCharacter = char.Parse(expressionText.Substring(expressionText.Length - 2, 1));
-                    if (isPlusOrMinus(lastCharacter) && isLeftBracket(penultimateCharacter) && isTimesOrDivided(oper))
+                    char penultimateCharacter = getPenultimateCharacter();
+                    if (isPlusOrMinus(lastCharacter) && isLeftBracket(penultimateCharacter) && isTimesOrDivided(op))
                         return expressionText;
                     else
                     {
                         removeLastCharacter();
-                        addToExpression(oper);
+                        addToExpression(op);
                     }
                 }
-                else if (isLeftBracket(lastCharacter) && isTimesOrDivided(oper))
+                else if (isLeftBracket(lastCharacter) && isTimesOrDivided(op))
                     return expressionText;
                 else
-                    addToExpression(oper);
+                    addToExpression(op);
             }
             return expressionText;
         }
+        public string checkSign(double tokensLength, string updatedInput)
+        {
+            string newInput;
+                int inputLength = updatedInput.Length;
+                if (tokensLength == 1)
+                    newInput = addADifferentSignBeforeALastumber(updatedInput);
+
+                else if (getPenultimateTokenType(updatedInput) == "LeftBracket" && isLastTokenMinus(updatedInput))
+                    newInput = updatedInput.Remove(inputLength - 2, 2);
+
+                else if (getLastTokenType(updatedInput) == "Number" && isPenultimateTokenPlus(updatedInput))
+                    newInput = addADifferentSignBeforeALastumber(updatedInput);
+
+                else if (getLastTokenType(updatedInput) == "Number" && getTheThirdFromTheEndTokenType(updatedInput) == "LeftBracket")
+                    newInput = updatedInput.Remove(inputLength - 2 - getLastTokenValue(updatedInput).Length, 2);
+
+                else if (getLastTokenType(updatedInput) == "Number")
+                    newInput = addADifferentSignBeforeALastumber(updatedInput);
+                else
+                {
+                    updatedInput += "(-";
+                    newInput = updatedInput;
+                }
+            return newInput;
+        }
+        private string addADifferentSignBeforeALastumber(string updatedInput)
+        {
+            updatedInput = updatedInput.Insert(updatedInput.Length - getLastTokenValue(updatedInput).Length, "(-");
+            return updatedInput;
+        }
+
+        private bool isPenultimateTokenPlus(string updatedInput)
+        {
+            return updatedInput[updatedInput.Length - 2] == '+';
+        }
+
+        private bool isLastTokenMinus(string updatedInput)
+        {
+            return updatedInput[updatedInput.Length - 1] == '-';
+        }
+        private string getLastTokenType(string updatedInput)
+        {
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+            Token lastItem = tokens[tokens.Length - 1];
+            return lastItem.getTokenType().ToString();
+        }
+
+        private string getLastTokenValue(string updatedInput)
+        {
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+            Token lastItem = tokens[tokens.Length - 1];
+            return lastItem.getTokenValue().ToString();
+        }
+
+        private string getPenultimateTokenType(string updatedInput)
+        {
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+            Token penultmateToken = tokens[tokens.Length - 2];
+            return penultmateToken.getTokenType().ToString();
+        }
+
+        private string getTheThirdFromTheEndTokenType(string updatedInput)
+        {
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+            Token theThird = tokens[tokens.Length - 3];
+            return theThird.getTokenType().ToString();
+        }
+
+
+
+
+
+
 
         public string setBracket(char bracket)
         {
             if (!isExpressionEmpty())
             {
                 char lastCharacter = getLastCharacter();
-
-                if (isNumberTheLastCharacter(lastCharacter) && isLeftBracket(bracket)) 
-                addToExpression("*(");
-
-                else if (isLeftBracket(lastCharacter) && isRightBracket(bracket))
-                    removeLastCharacter();
-
-                else if (isRightBracket(lastCharacter) && countLeftBraces() > countRightBraces())
-                    addToExpression(")");
-
-
-                else if (isRightBracket(bracket) && countLeftBraces() >= countRightBraces() && !isNumberTheLastCharacter(lastCharacter)) { }
-
-                else if (isRightBracket(bracket) && countLeftBraces() == 0) { }
-
-                else if (!isNumberTheLastCharacter(lastCharacter) && isLeftBracket(bracket))
+                if(isLeftBracket(bracket))
+                {
+                    if (isNumberTheLastCharacter(lastCharacter) || isRightBracket(lastCharacter))
+                        addToExpression("*");
                     addToExpression("(");
-
+                }
+                else if(isRightBracket(bracket))
+                {
+                    if (isLeftBracket(lastCharacter))
+                        removeLastCharacter();
+                    else if (countLeftBraces() >= countRightBraces() && !isNumberTheLastCharacter(lastCharacter) && !isRightBracket(lastCharacter)) { }
+                    else if ( countLeftBraces() == 0) { }
+                    else if(countLeftBraces() > countRightBraces())
+                        addToExpression(")");
+                }
                 else
                     addToExpression(bracket.ToString());
-
                 return expressionText;
             }
             else if (isExpressionEmpty() && isRightBracket(bracket))
@@ -191,6 +266,10 @@ namespace Calculator_.Models
         private static bool isOperator(char lastCharacter)
         {
             return lastCharacter == '+' || lastCharacter == '-' || lastCharacter == '*' || lastCharacter == '/';
+        }
+        private char getPenultimateCharacter()
+        {
+            return char.Parse(expressionText.Substring(expressionText.Length - 2, 1));
         }
     }
 }

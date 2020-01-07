@@ -17,13 +17,17 @@ namespace Calculator_.Models
         public string getResult(Token[] tokens)
         {
             double answer;
-            ShuntingYard sy = new ShuntingYard(tokens);
-            tokens = sy.getArray();
-            CalculateExpression calculate = new CalculateExpression(tokens);
-            answer = calculate.getAnswer();
+            if (tokens.Length==0)
+                answer = 0;
+            else
+            {
+                ShuntingYard sy = new ShuntingYard(tokens);
+                tokens = sy.getArray();
+                CalculateExpression calculate = new CalculateExpression(tokens);
+                answer = calculate.getAnswer();
+            }
             return answer.ToString();
         }
-
 
         public  bool isNumberHaveADot(Token[] tokens, string updatedInput, TextBox expressionTextBox)
         {
