@@ -14,46 +14,21 @@ namespace Calculator_.Models
 
         }
 
-        public string getResult(Token[] tokens)
+        public string getResult(Token[] tokens, string updatedInput)
         {
-            double answer;
-            if (tokens.Length==0)
-                answer = 0;
+            string answer;
+            if (tokens.Length == 0 || InputValidation.countLeftBrackets(updatedInput)!=InputValidation.countRightBrackets(updatedInput))
+                answer = "";
             else
             {
                 ShuntingYard sy = new ShuntingYard(tokens);
                 tokens = sy.getArray();
                 CalculateExpression calculate = new CalculateExpression(tokens);
-                answer = calculate.getAnswer();
+                answer = calculate.getAnswer().ToString();
             }
-            return answer.ToString();
+            return answer;
         }
 
-        public  bool isNumberHaveADot(Token[] tokens, string updatedInput, TextBox expressionTextBox)
-        {
-            for (int i = 0; i < tokens.Length; i++)
-            {
-                Console.WriteLine("token " + tokens[i].getTokenValue());
-                if ((getLastTokenValue(updatedInput).Contains(".") && getLastTokenType(updatedInput) == "Number") || expressionTextBox.Text.EndsWith("."))
-                    return true;
-            }
-            return false;
-        }
-
-        private string getLastTokenType(string updatedInput)
-        {
-            Tokenize inputTokenize = new Tokenize(updatedInput);
-            Token[] tokens = inputTokenize.getArrayOfTokens();
-            Token lastItem = tokens[tokens.Length - 1];
-            return lastItem.getTokenType().ToString();
-        }
-
-        private string getLastTokenValue(string updatedInput)
-        {
-            Tokenize inputTokenize = new Tokenize(updatedInput);
-            Token[] tokens = inputTokenize.getArrayOfTokens();
-            Token lastItem = tokens[tokens.Length - 1];
-            return lastItem.getTokenValue().ToString();
-        }
     }
+
 }

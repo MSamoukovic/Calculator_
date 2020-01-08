@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,10 +16,12 @@ namespace Calculator_
     {
         public Calculator()
         {
-            InitializeComponent();         
+            InitializeComponent();
+            string x = "0.020";
+            Console.WriteLine(x.Length);
         }
 
-        Input input = new Input();
+        InputValidation validationInput = new InputValidation();
         string answer;
         string updatedInput;
         Result result = new Result(); 
@@ -26,7 +29,7 @@ namespace Calculator_
         private void operatorClick(object sender, EventArgs e)
         {
             Button operatorButton = (Button)sender;
-            updatedInput = input.setOperator(operatorButton.Text);
+            updatedInput = validationInput.setOperator(operatorButton.Text);
             expressionTextBox.Text = updatedInput;
             numberTextBox.Text = "";
         }
@@ -34,69 +37,51 @@ namespace Calculator_
         private void numberClick(object sender, EventArgs e)
         {
             Button numberButton = (Button)sender;
-            updatedInput = input.setNumber(numberButton.Text);
+            updatedInput = validationInput.setNumber(numberButton.Text, updatedInput);
             expressionTextBox.Text = updatedInput;
             numberTextBox.ForeColor = Color.DarkGray;
 
-            if (input.countLeftBraces() != input.countRightBraces())
-                numberTextBox.Text = "";
-            else
-            {
-                Tokenize inputTokenize = new Tokenize(updatedInput);
-                Token[] tokens = inputTokenize.getArrayOfTokens();
-                answer = result.getResult(tokens);
-                numberTextBox.Text = answer;
-
-               if( result.isNumberHaveADot(tokens,updatedInput,expressionTextBox)==true)
-                    dotButton.Enabled = false;
-               else
-                    dotButton.Enabled = true;
-            }
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+            answer = result.getResult(tokens, updatedInput);
+            numberTextBox.Text = answer;
         }
 
         private void equallyButton_Click(object sender, EventArgs e)
         {
             try
             {
-                updatedInput = input.setResult();
+                updatedInput = validationInput.setResult();
                 Tokenize inputTokenize = new Tokenize(updatedInput);
                 Token[] tokens = inputTokenize.getArrayOfTokens();
-                answer = result.getResult(tokens);
+
+                answer = result.getResult(tokens, updatedInput);
                 numberTextBox.Text = answer;
           
-                input.setInputIsEmpty();
-                updatedInput = input.setNumber(answer.ToString());
+                validationInput.setInputIsEmpty();
+                updatedInput = validationInput.setNumber(answer.ToString(),updatedInput);
                 expressionTextBox.Text = answer;
-
             }
-            catch (Exception f)
+            catch (Exception ex)
             {
-                Console.WriteLine(f.Message);
+                Console.WriteLine(ex.Message);
             }
-        }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            numberTextBox.Clear();
-            expressionTextBox.Clear();
-            answer = "";
-            input.setInputIsEmpty();
-            updatedInput = "";
         }
 
         private void bracketClick(object sender, EventArgs e)
         {
             Button braceButton = (Button)sender;
-            updatedInput = input.setBracket(char.Parse(braceButton.Text));
+            updatedInput = validationInput.setBracket(char.Parse(braceButton.Text));
             expressionTextBox.Text = updatedInput;
 
-            if (input.countLeftBraces() != input.countRightBraces())
+            if (InputValidation.countLeftBrackets(expressionTextBox.Text) != InputValidation.countRightBrackets(expressionTextBox.Text))
                 numberTextBox.Text = "";
             else
             {
                 Tokenize inputTokenize = new Tokenize(updatedInput);
                 Token[] tokens = inputTokenize.getArrayOfTokens();
-                answer = result.getResult(tokens);
+
+                answer = result.getResult(tokens, updatedInput);
                 numberTextBox.Text = answer;
             }
         }
@@ -107,12 +92,25 @@ namespace Calculator_
                 updatedInput = "(-";
             else
             {
+                //uraditi da checkSign vraca novi niz tokena 
+                //tokens = novi niz tokena 
                 Tokenize inputTokenize = new Tokenize(updatedInput);
                 Token[] tokens = inputTokenize.getArrayOfTokens();
-                updatedInput = input.checkSign(tokens.Length, updatedInput);
+                updatedInput = validationInput.checkSign(tokens, updatedInput);
+                numberTextBox.Text = "";
             }
-            updatedInput = input.updateExpressionText(updatedInput);
+            updatedInput = validationInput.updateExpressionText(updatedInput);
             expressionTextBox.Text = updatedInput;
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            numberTextBox.Clear();
+            expressionTextBox.Clear();
+            answer = "";
+            validationInput.setInputIsEmpty();
+            updatedInput = "";
+
         }
     }
 }

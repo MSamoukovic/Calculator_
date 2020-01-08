@@ -38,24 +38,20 @@ namespace Calculator_.Models
             return tokenType;
         }
 
-        //public static TokenType getTokenType(string str)
-        //{
-        //    return TokenType.Operator;
-        //}
-
         public char getSymbol()
         {
             return symbol;
         }
+
         public int getPrecedence()
         {
             return precedence;
         }
+
         public int getParameterCount()
         {
             return parameterCount;
         }
-
 
         public double getTokenValue()
         {
