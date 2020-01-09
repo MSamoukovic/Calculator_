@@ -127,7 +127,7 @@
             this.numberTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.tableLayoutPanel2.SetColumnSpan(this.numberTextBox, 4);
             this.numberTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F);
-            this.numberTextBox.ForeColor = System.Drawing.Color.Black;
+            this.numberTextBox.ForeColor = System.Drawing.Color.DarkGray;
             this.numberTextBox.Location = new System.Drawing.Point(3, 36);
             this.numberTextBox.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
             this.numberTextBox.Name = "numberTextBox";

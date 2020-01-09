@@ -14,8 +14,11 @@ namespace Calculator_.Models
 
         }
 
-        public string getResult(Token[] tokens, string updatedInput)
+        public string getResult(string updatedInput)
         {
+            Tokenize inputTokenize = new Tokenize(updatedInput);
+            Token[] tokens = inputTokenize.getArrayOfTokens();
+
             string answer;
             if (tokens.Length == 0 || InputValidation.countLeftBrackets(updatedInput)!=InputValidation.countRightBrackets(updatedInput))
                 answer = "";

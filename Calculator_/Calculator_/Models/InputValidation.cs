@@ -98,83 +98,65 @@ namespace Calculator_.Models
             string newInput;
             int inputLength = updatedInput.Length;
 
-            //if(!String.IsNullOrEmpty(updatedInput))
-            //{
-            //    string zerosOfTheEndOfTheNumber = Regex.Match(updatedInput, @"(0 +)$").Value;
-
-            // //  newInput = updatedInput.Replace(zerosOfTheEndOfTheNumber, "");
-
-            //}
-
-            //if (tokens.Length == 1)
-            //    newInput = addADifferentSignBeforeALastumber(updatedInput);
-            //else
-
-            if (lastToken(tokens) == "Number" && penultimateToken(tokens) == "Operator" && getThirdTokenBeforLast(tokens) == "LeftBracket")
-            {
-                var newTokens = new List<Token>();
-                newTokens.RemoveAt(2);
-                tokens = newTokens.ToArray();
-            }
-            else if (getPenultimateTokenType(updatedInput) == "LeftBracket" && isLastTokenMinus(updatedInput))
-                newInput = updatedInput.Remove(inputLength - 2, 2);
-
-            else if (lastToken(tokens) == "Number")
-            {
-                string decimalNumber = Regex.Match(updatedInput, @"(\d+.\d+)$").Value;
-                newInput = updatedInput.Insert(updatedInput.Length - decimalNumber.Length, "(-");
-
-            }
-
-            //    //else if(tokens.Length!=0 && getLastTokenValue(updatedInput)=="0" && getTheThirdFromTheEndTokenType(updatedInput) != "LeftBracket" && !isPenultimateTokenMinus(updatedInput))
-            //    //{
-            //    //    string numberZero = Regex.Match(updatedInput, @"(0.[0]+)$").Value;
-            //    //    if (numberZero == "") 
-            //    //        newInput = addADifferentSignBeforeALastumber(updatedInput);
-            //    //    else
-            //    //    newInput = updatedInput.Replace(numberZero, "(-0");
-            //    //}
-
-
-            //    //else if (getLastTokenType(updatedInput) == "Number" && isPenultimateTokenPlus(updatedInput))
-            //    //    newInput = addADifferentSignBeforeALastumber(updatedInput);
-
-            //    //else if (getLastTokenType(updatedInput) == "Number" && getTheThirdFromTheEndTokenType(updatedInput) == "LeftBracket")
-            //    //    newInput = updatedInput.Remove(inputLength - 2 - getLastTokenValue(updatedInput).Length, 2);
-
-            //    //else if (getLastTokenType(updatedInput) == "Number")
-            //    //    newInput = addADifferentSignBeforeALastumber(updatedInput);
-            //    //else if (getLastTokenType(updatedInput) == "RightBracket")
-            //    //    newInput = updatedInput + "*(-";
+            if (tokens.Length == 1)
+                newInput = addADifferentSignBeforeIntLastumber(updatedInput);
             else
             {
-                updatedInput += "(-";
-                newInput = updatedInput;
+                if (isOnlyNegativNumberInExpression(tokens, updatedInput))
+                    newInput = updatedInput.Replace('-', '+');
+                else if (getLastTokenType(updatedInput) == "Number" && isPenultimateTokenPlus(updatedInput)) // ...+25
+                    newInput = addADifferentSignBeforeIntLastumber(updatedInput);
+                else if (getPenultimateTokenType(tokens) == "LeftBracket" && getLastCharacter() == '-') // ...(-
+                    newInput = updatedInput.Remove(inputLength - 2, 2);
+
+                else if (getLastTokenType(updatedInput) == "Number" && getThirdBeforLastTokenType(tokens) == "LeftBracket"
+                    && isPenultimateTokenMinus(updatedInput)) //... (-25
+
+                    newInput = updatedInput.Remove(inputLength - 2 - getLastTokenValue(updatedInput).Length, 2);
+
+                else if (getLastTokenType(updatedInput) == "Number")
+                    newInput = addADifferentSignBeforeIntLastumber(updatedInput);
+                else if (getLastTokenType(updatedInput) == "RightBracket")
+                    newInput = updatedInput + "*(-";
+                else
+                {
+                    updatedInput += "(-";
+                    newInput = updatedInput;
+                }
             }
-
-            //   else if (lastToken(tokens) == "Number")
-            //    {
-            //            string numberZero = Regex.Match(updatedInput, @"(0.[0]+)$").Value;
-            //            if (numberZero == "")
-            //                newInput = addADifferentSignBeforeALastumber(updatedInput);
-            //            else
-            //                newInput = updatedInput.Replace(numberZero, "(-0");
-            //    }
-
-
             return newInput;
         }
 
-        public string lastToken(Token[] tokens)
+        private static bool isOnlyNegativNumberInExpression(Token[] tokens, string updatedInput)
         {
-           return tokens.Last().getTokenType().ToString();
+            return tokens.Length == 2 && updatedInput[0] == '-';
         }
 
-        public string penultimateToken(Token[] tokens)
+        public string checkSignOfDecimalToken(Token[] tokens, string updatedInput,int lastTokenLength)
+        {
+            string newInput;
+            int inputLength = updatedInput.Length;
+            if (tokens.Length == 1)
+                newInput = updatedInput.Insert(0, "(-");
+            else if (updatedInput[inputLength - lastTokenLength - 1] == '-' && getThirdBeforLastTokenType(tokens) == "LeftBracket")
+                 newInput = updatedInput.Remove(inputLength - 2 - lastTokenLength, 2);
+            else
+                 newInput = updatedInput.Insert(inputLength - lastTokenLength, "(-");
+            return newInput;
+        }
+        public string checkIsExpressionEmpty(string updatedExpression)
+        {
+            string newInput="";
+            if (String.IsNullOrEmpty(updatedExpression))
+                newInput = updatedExpression + "(-";
+            return newInput;
+        }
+
+        public string getPenultimateTokenType(Token[] tokens)
         {
             return tokens[tokens.Length-2].getTokenType().ToString();
         }
-        public string getThirdTokenBeforLast(Token[] tokens)
+        public string getThirdBeforLastTokenType(Token[] tokens)
         {
             return tokens[tokens.Length - 3].getTokenType().ToString();
         }
@@ -218,9 +200,24 @@ namespace Calculator_.Models
             return false;
         }
 
-        public string updateExpressionText(string updateString)
+        public string changeTheSign(string updatedExpression)
         {
-            return expressionText = updateString;
+            if (String.IsNullOrEmpty(updatedExpression))
+                updatedExpression = "(-";
+            else
+            {
+                Tokenize inputTokenize = new Tokenize(updatedExpression);
+                Token[] tokens = inputTokenize.getArrayOfTokens();
+
+                string lastDecimalToken = Regex.Match(updatedExpression, @"(\d+\.\d+)$").Value;
+                if (!string.IsNullOrEmpty(lastDecimalToken))
+                    updatedExpression = checkSignOfDecimalToken(tokens, updatedExpression, lastDecimalToken.Length);
+                else
+                    updatedExpression = checkSign(tokens, updatedExpression);
+            }
+            expressionText = updatedExpression;
+            return expressionText;
+
         }
 
         public void setInputIsEmpty()
@@ -250,7 +247,7 @@ namespace Calculator_.Models
             return countRightBraces;
         }
 
-        private string addADifferentSignBeforeALastumber(string updatedInput)
+        private string addADifferentSignBeforeIntLastumber(string updatedInput)
         {
             updatedInput = updatedInput.Insert(updatedInput.Length - getLastTokenValue(updatedInput).Length, "(-");
             return updatedInput;
@@ -258,16 +255,14 @@ namespace Calculator_.Models
 
         private bool isPenultimateTokenPlus(string updatedInput)
         {
-            return updatedInput[updatedInput.Length - 2] == '+';
-        }
-        private bool isPenultimateTokenMinus(string updatedInput)
-        {
-            return updatedInput[updatedInput.Length - 2] == '-';
+            return updatedInput[updatedInput.Length - getLastTokenValue(updatedInput).Length - 1] == '+';
+
         }
 
-        private bool isLastTokenMinus(string updatedInput)
+        private bool isPenultimateTokenMinus(string updatedInput)
         {
-            return updatedInput[updatedInput.Length - 1] == '-';
+            return updatedInput[updatedInput.Length - getLastTokenValue(updatedInput).Length - 1] == '-';
+
         }
 
         private void addToExpression(string text)
@@ -343,22 +338,6 @@ namespace Calculator_.Models
             Token[] tokens = inputTokenize.getArrayOfTokens();
             Token lastItem = tokens[tokens.Length - 1];
             return lastItem.getTokenValue().ToString();
-        }
-
-        private string getPenultimateTokenType(string updatedInput)
-        {
-            Tokenize inputTokenize = new Tokenize(updatedInput);
-            Token[] tokens = inputTokenize.getArrayOfTokens();
-            Token penultmateToken = tokens[tokens.Length - 2];
-            return penultmateToken.getTokenType().ToString();
-        }
-
-        private string getTheThirdFromTheEndTokenType(string updatedInput)
-        {
-            Tokenize inputTokenize = new Tokenize(updatedInput);
-            Token[] tokens = inputTokenize.getArrayOfTokens();
-            Token theThird = tokens[tokens.Length - 3];
-            return theThird.getTokenType().ToString();
         }
     }
 }

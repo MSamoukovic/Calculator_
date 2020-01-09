@@ -86,7 +86,6 @@ namespace Calculator_.Models
             return false;
         }
 
-
         public Associativity Assoc
         {
             get
@@ -115,11 +114,7 @@ namespace Calculator_.Models
             this.parameterCount = parameterCount;
         }
 
-        public void setSymbol(char sy)
-        {
-            symbol = sy;
-        }
-        public static Token stringToToken(string str) // ovjd eposaljemo citav input i izracunamo
+        public static Token stringToToken(string str)
         {
             Token token = new Token();
             if (double.TryParse(str, out token.tokenValue))
