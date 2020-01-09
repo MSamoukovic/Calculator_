@@ -52,10 +52,16 @@
     <Compile Include="Calculator.Designer.cs">
       <DependentUpon>Calculator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operator\AdditionOperator.cs" />
     <Compile Include="Models\CalculateExpression.cs" />
+    <Compile Include="Operator\DivisionOperator.cs" />
+    <Compile Include="Operator\ExpressionFactory.cs" />
     <Compile Include="Models\InputValidation.cs" />
+    <Compile Include="Operator\MultiplicationOperator.cs" />
+    <Compile Include="Operator\Oper.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\ShuntingYard.cs" />
+    <Compile Include="Operator\SubtractionOperator.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\Tokenize.cs" />
     <Compile Include="Program.cs" />

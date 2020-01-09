@@ -127,11 +127,6 @@ namespace Calculator_.Models
             return newInput;
         }
 
-        private static bool isOnlyNegativNumberInExpression(Token[] tokens, string updatedInput)
-        {
-            return tokens.Length == 2 && updatedInput[0] == '-';
-        }
-
         public string checkSignOfDecimalToken(Token[] tokens, string updatedInput,int lastTokenLength)
         {
             string newInput;
@@ -159,35 +154,6 @@ namespace Calculator_.Models
         public string getThirdBeforLastTokenType(Token[] tokens)
         {
             return tokens[tokens.Length - 3].getTokenType().ToString();
-        }
-        public string setBracket(char bracket)
-        {
-            if (!isExpressionEmpty())
-            {
-                char lastCharacter = getLastCharacter();
-                if (isLeftBracket(bracket))
-                {
-                    if (isNumberTheLastCharacter(lastCharacter) || isRightBracket(lastCharacter) || lastCharacter=='.')
-                        addToExpression("*");
-                    addToExpression("(");
-                }
-                else if (isRightBracket(bracket))
-                {
-                    if (isLeftBracket(lastCharacter))
-                        removeLastCharacter();
-                    else if (countLeftBrackets(expressionText) >= countRightBrackets(expressionText) && !isNumberTheLastCharacter(lastCharacter) && !isRightBracket(lastCharacter)) { }
-                    else if (countLeftBrackets(expressionText) == 0) { }
-                    else if (countLeftBrackets(expressionText) > countRightBrackets(expressionText))
-                        addToExpression(")");
-                }
-                else
-                    addToExpression(bracket.ToString());
-                return expressionText;
-            }
-            else if (isExpressionEmpty() && isRightBracket(bracket))
-                return expressionText = String.Empty;
-            else
-                return expressionText += bracket;
         }
 
         public bool isNumberHaveADot(Token[] tokens, string updatedInput, TextBox expressionTextBox)
@@ -245,6 +211,41 @@ namespace Calculator_.Models
                     countRightBraces++;
             }
             return countRightBraces;
+        }
+
+        public string setBracket(char bracket)
+        {
+            if (!isExpressionEmpty())
+            {
+                char lastCharacter = getLastCharacter();
+                if (isLeftBracket(bracket))
+                {
+                    if (isNumberTheLastCharacter(lastCharacter) || isRightBracket(lastCharacter) || lastCharacter == '.')
+                        addToExpression("*");
+                    addToExpression("(");
+                }
+                else if (isRightBracket(bracket))
+                {
+                    if (isLeftBracket(lastCharacter))
+                        removeLastCharacter();
+                    else if (countLeftBrackets(expressionText) >= countRightBrackets(expressionText) && !isNumberTheLastCharacter(lastCharacter) && !isRightBracket(lastCharacter)) { }
+                    else if (countLeftBrackets(expressionText) == 0) { }
+                    else if (countLeftBrackets(expressionText) > countRightBrackets(expressionText))
+                        addToExpression(")");
+                }
+                else
+                    addToExpression(bracket.ToString());
+                return expressionText;
+            }
+            else if (isExpressionEmpty() && isRightBracket(bracket))
+                return expressionText = String.Empty;
+            else
+                return expressionText += bracket;
+        }
+
+        private static bool isOnlyNegativNumberInExpression(Token[] tokens, string updatedInput)
+        {
+            return tokens.Length == 2 && updatedInput[0] == '-';
         }
 
         private string addADifferentSignBeforeIntLastumber(string updatedInput)

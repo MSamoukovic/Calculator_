@@ -18,7 +18,8 @@ namespace Calculator_.Models
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
-
+            for (int i =0;i<tokens.Length;i++)
+            Console.WriteLine("tokens " + tokens[i].getTokenType().ToString());
             string answer;
             if (tokens.Length == 0 || InputValidation.countLeftBrackets(updatedInput)!=InputValidation.countRightBrackets(updatedInput))
                 answer = "";

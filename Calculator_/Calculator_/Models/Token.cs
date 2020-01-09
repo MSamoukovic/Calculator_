@@ -8,8 +8,7 @@ namespace Calculator_.Models
 {
      class Token
     {
-      
-        public  enum TokenType 
+        public enum TokenType 
         { 
             Number,
             Operator,
@@ -29,20 +28,46 @@ namespace Calculator_.Models
         Associativity assoc = Associativity.Left;
 
         double tokenValue = 0;
-        char symbol = ' ';
-        int precedence;
-        int parameterCount;
+       // char symbol;
+        //int precedence;
+        //int parameterCount;
+
+        public char Symbol { get; set; }
+        public int precedence { get; set; }
+        public int parameterCount { get; set; }
+
 
         public  TokenType getTokenType()
         {
             return tokenType;
         }
 
-        public char getSymbol()
+        public Associativity Assoc
         {
-            return symbol;
+            get
+            {
+                return getAssociativity();
+            }
+            set
+            {
+                assoc = value;
+            }
         }
-
+        public double TokenValue
+        {
+            get
+            {
+                return getTokenValue();
+            }
+            set
+            {
+                tokenValue = value;
+            }
+        }
+        public Associativity getAssociativity()
+        {
+            return assoc;
+        }
         public int getPrecedence()
         {
             return precedence;
@@ -86,29 +111,9 @@ namespace Calculator_.Models
             return false;
         }
 
-        public Associativity Assoc
-        {
-            get
-            {
-                return assoc;
-            }
-        }
-
-        public double TokenValue
-        {
-            get
-            {
-                return tokenValue;
-            }
-            set
-            {
-                tokenValue = value;
-            }
-        }
-
         public void setValues(char symbol, Associativity assoc, int parameterCount, int precedence)
         {
-            this.symbol = symbol;
+            this.Symbol = symbol;
             this.assoc = assoc;
             this.precedence = precedence;
             this.parameterCount = parameterCount;
@@ -131,40 +136,42 @@ namespace Calculator_.Models
             }
             else
             {
-                switch (str)
-                {
-                    case "+":
-                        token.tokenType = TokenType.Operator;
-                        token.symbol = '+';
-                        token.assoc = Associativity.Left;
-                        token.precedence = 10;
-                        token.parameterCount = 2;
-                        break;
-                    case "-":
-                        token.tokenType = TokenType.Operator;
-                        token.symbol = '-';
-                        token.assoc = Associativity.Left;
-                        token.precedence = 10;
-                        token.parameterCount = 2;
-                        break;
-                    case "*":
-                        token.tokenType = TokenType.Operator;
-                        token.symbol = '*';
-                        token.assoc = Associativity.Left;
-                        token.precedence = 20;
-                        token.parameterCount = 2;
-                        break;
-                    case "/":
-                        token.tokenType = TokenType.Operator;
-                        token.symbol = '/';
-                        token.assoc = Associativity.Left;
-                        token.precedence = 20;
-                        token.parameterCount = 2;
-                        break;
-                    default:
-                        token.tokenType = TokenType.Nothing;
-                        break;
-                }
+                token = new Oper();
+                ExpressionFactory.getExpression(str);
+                //switch (str)
+                //{
+                //    case "+":
+                //        token.tokenType = TokenType.Operator;
+                //        token.symbol = '+';
+                //        token.assoc = Associativity.Left;
+                //        token.precedence = 10;
+                //        token.parameterCount = 2;
+                //        break;
+                //    case "-":
+                //        token.tokenType = TokenType.Operator;
+                //        token.symbol = '-';
+                //        token.assoc = Associativity.Left;
+                //        token.precedence = 10;
+                //        token.parameterCount = 2;
+                //        break;
+                //    case "*":
+                //        token.tokenType = TokenType.Operator;
+                //        token.symbol = '*';
+                //        token.assoc = Associativity.Left;
+                //        token.precedence = 20;
+                //        token.parameterCount = 2;
+                //        break;
+                //    case "/":
+                //        token.tokenType = TokenType.Operator;
+                //        token.symbol = '/';
+                //        token.assoc = Associativity.Left;
+                //        token.precedence = 20;
+                //        token.parameterCount = 2;
+                //        break;
+                //    default:
+                //        token.tokenType = TokenType.Nothing;
+                //        break;
+                //}
             }
             return token;
         }

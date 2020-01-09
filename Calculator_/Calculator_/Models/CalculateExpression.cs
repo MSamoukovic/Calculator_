@@ -52,7 +52,7 @@ namespace Calculator_.Models
          
         private Token EvaluateOperator(Token oper, List<Token> operands)
         {   
-            switch (oper.getSymbol())
+            switch (oper.Symbol)
             {
                 case '+':                 
                       operands[0].TokenValue += operands[1].getTokenValue();              
