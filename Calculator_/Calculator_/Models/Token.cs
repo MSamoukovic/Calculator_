@@ -16,8 +16,11 @@ namespace Calculator_.Models
             RightBracket,
             Nothing
         }
+        public Token()
+        {
 
-        TokenType tokenType = TokenType.Nothing;
+        }
+        TokenType tokenType = TokenType.Operator; // jer ako je nothing, uzme da je Oper Nothing
 
         public enum Associativity
         {
@@ -33,16 +36,10 @@ namespace Calculator_.Models
         //int parameterCount;
 
         public char Symbol { get; set; }
-        public int precedence { get; set; }
-        public int parameterCount { get; set; }
+        public int Precedence { get; set; }
+        public int ParameterCount { get; set; }
 
-
-        public  TokenType getTokenType()
-        {
-            return tokenType;
-        }
-
-        public Associativity Assoc
+        private Associativity Assoc
         {
             get
             {
@@ -64,18 +61,24 @@ namespace Calculator_.Models
                 tokenValue = value;
             }
         }
+
+        public TokenType getTokenType()
+        {
+            return tokenType;
+        }
+       
         public Associativity getAssociativity()
         {
             return assoc;
         }
         public int getPrecedence()
         {
-            return precedence;
+            return Precedence;
         }
 
         public int getParameterCount()
         {
-            return parameterCount;
+            return ParameterCount;
         }
 
         public double getTokenValue()
@@ -115,64 +118,25 @@ namespace Calculator_.Models
         {
             this.Symbol = symbol;
             this.assoc = assoc;
-            this.precedence = precedence;
-            this.parameterCount = parameterCount;
+            this.Precedence = precedence;
+            this.ParameterCount = parameterCount;
         }
 
         public static Token stringToToken(string str)
         {
             Token token = new Token();
             if (double.TryParse(str, out token.tokenValue))
-            {
                 token.tokenType = TokenType.Number;
-            }
+
             else if (str == "(")
-            {
                 token.tokenType = TokenType.LeftBracket;
-            }
+
             else if (str == ")")
-            {
                 token.tokenType = TokenType.RightBracket;
-            }
+
             else
-            {
-                token = new Oper();
-                ExpressionFactory.getExpression(str);
-                //switch (str)
-                //{
-                //    case "+":
-                //        token.tokenType = TokenType.Operator;
-                //        token.symbol = '+';
-                //        token.assoc = Associativity.Left;
-                //        token.precedence = 10;
-                //        token.parameterCount = 2;
-                //        break;
-                //    case "-":
-                //        token.tokenType = TokenType.Operator;
-                //        token.symbol = '-';
-                //        token.assoc = Associativity.Left;
-                //        token.precedence = 10;
-                //        token.parameterCount = 2;
-                //        break;
-                //    case "*":
-                //        token.tokenType = TokenType.Operator;
-                //        token.symbol = '*';
-                //        token.assoc = Associativity.Left;
-                //        token.precedence = 20;
-                //        token.parameterCount = 2;
-                //        break;
-                //    case "/":
-                //        token.tokenType = TokenType.Operator;
-                //        token.symbol = '/';
-                //        token.assoc = Associativity.Left;
-                //        token.precedence = 20;
-                //        token.parameterCount = 2;
-                //        break;
-                //    default:
-                //        token.tokenType = TokenType.Nothing;
-                //        break;
-                //}
-            }
+                token = OperatorFactory.getInstance(str);
+
             return token;
         }
     }

@@ -41,7 +41,7 @@ namespace Calculator_.Models
             }
             else
             {
-                //throw new Exception("ddd");
+                //throw new Exception("");
                 return;
             }
         } 
@@ -51,31 +51,20 @@ namespace Calculator_.Models
         }
          
         private Token EvaluateOperator(Token oper, List<Token> operands)
-        {   
-            switch (oper.Symbol)
-            {
-                case '+':                 
-                      operands[0].TokenValue += operands[1].getTokenValue();              
-                    break;
-                case '-':
-                    operands[0].TokenValue = operands[1].getTokenValue() - operands[0].getTokenValue();
-                    break;
-                case '*':
-                    operands[0].TokenValue *= operands[1].getTokenValue();
-                    break;
-                case '/':
-                    operands[0].TokenValue = operands[1].getTokenValue() / operands[0].getTokenValue();
-                    break;
-                case '_':
-                    operands[0].TokenValue = -operands[0].getTokenValue();
-                    break;
+        {
 
-                default:
-                    throw new Exception("unknown operator");
-            }
+            if(oper.Symbol=='_')
+                operands[0].TokenValue = -operands[0].getTokenValue();
 
+            else if(OperatorFactory.getInstance(oper.Symbol.ToString()).getResult(operands[0], operands[1])!=oper)
+                operands[0] = OperatorFactory.getInstance(oper.Symbol.ToString()).getResult(operands[0], operands[1]);
+
+            else
+                throw new Exception("unknown operator");
             return operands[0];
+
         }
     }
+    
 }
 

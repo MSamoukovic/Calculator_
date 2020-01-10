@@ -15,7 +15,7 @@ namespace Calculator_.Models
         public ShuntingYard(Token[] tokens)
         {
             int index = 0;
-            while (index < tokens.Count()) //prodjemo ktoz citavu listu
+            while (index < tokens.Count())
             {
                 Token token = tokens[index];
 
@@ -134,7 +134,7 @@ namespace Calculator_.Models
 
         private static bool isTokenAssociativityLeft(Token token)
         {
-            return token.Assoc == Token.Associativity.Left;
+            return token.getAssociativity() == Token.Associativity.Left;
         }
 
         private static bool isFirstTokenOnStackOperator(Token firstTokenInStack)

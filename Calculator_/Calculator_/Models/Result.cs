@@ -18,16 +18,13 @@ namespace Calculator_.Models
         {
             Tokenize inputTokenize = new Tokenize(updatedInput);
             Token[] tokens = inputTokenize.getArrayOfTokens();
-            for (int i =0;i<tokens.Length;i++)
-            Console.WriteLine("tokens " + tokens[i].getTokenType().ToString());
             string answer;
             if (tokens.Length == 0 || InputValidation.countLeftBrackets(updatedInput)!=InputValidation.countRightBrackets(updatedInput))
                 answer = "";
             else
             {
                 ShuntingYard sy = new ShuntingYard(tokens);
-                tokens = sy.getArray();
-                CalculateExpression calculate = new CalculateExpression(tokens);
+                CalculateExpression calculate = new CalculateExpression(sy.getArray());
                 answer = calculate.getAnswer().ToString();
             }
             return answer;

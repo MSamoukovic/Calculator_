@@ -55,8 +55,9 @@
     <Compile Include="Operator\AdditionOperator.cs" />
     <Compile Include="Models\CalculateExpression.cs" />
     <Compile Include="Operator\DivisionOperator.cs" />
-    <Compile Include="Operator\ExpressionFactory.cs" />
+    <Compile Include="Operator\OperatorFactory.cs" />
     <Compile Include="Models\InputValidation.cs" />
+    <Compile Include="Operator\MOperator.cs" />
     <Compile Include="Operator\MultiplicationOperator.cs" />
     <Compile Include="Operator\Oper.cs" />
     <Compile Include="Models\Result.cs" />

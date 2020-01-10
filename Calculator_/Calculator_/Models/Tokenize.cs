@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Calculator_.Models
 {
@@ -34,17 +30,16 @@ namespace Calculator_.Models
 
         private string[] SplitForTokenize(string input)
         {
-            input = input.Replace("*", " * ");
-            input = input.Replace("/", " / ");
-            input = input.Replace("+", " + ");
-            input = input.Replace("-", " - ");
+            var operators = OperatorFactory.getOperators();
+            foreach(var o in operators)
+                input = input.Replace(o, " "+o+" ");
+
             input = input.Replace("(", " ( ");
             input = input.Replace(")", " ) ");
+
             input = input.Trim();
             while (input.Contains("  "))
-            {
                 input = input.Replace("  ", " ");
-            }
             return input.Split(' ');
         }
 

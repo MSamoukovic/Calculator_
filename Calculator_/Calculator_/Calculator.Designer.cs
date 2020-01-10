@@ -52,6 +52,7 @@
             this.addButton = new System.Windows.Forms.Button();
             this.equallyButton = new System.Windows.Forms.Button();
             this.changeSign = new System.Windows.Forms.Button();
+            this.MButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -367,11 +368,24 @@
             this.changeSign.UseVisualStyleBackColor = false;
             this.changeSign.Click += new System.EventHandler(this.changeSign_Click);
             // 
+            // MButton
+            // 
+            this.MButton.BackColor = System.Drawing.Color.Silver;
+            this.MButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.MButton.Location = new System.Drawing.Point(354, 366);
+            this.MButton.Name = "MButton";
+            this.MButton.Size = new System.Drawing.Size(46, 61);
+            this.MButton.TabIndex = 17;
+            this.MButton.Text = "M";
+            this.MButton.UseVisualStyleBackColor = false;
+            this.MButton.Click += new System.EventHandler(this.operatorClick);
+            // 
             // Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 455);
+            this.ClientSize = new System.Drawing.Size(418, 440);
+            this.Controls.Add(this.MButton);
             this.Controls.Add(this.tableLayoutPanel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -409,6 +423,7 @@
         private System.Windows.Forms.TextBox expressionTextBox;
         private System.Windows.Forms.Button changeSign;
         private System.Windows.Forms.Button right;
+        private System.Windows.Forms.Button MButton;
     }
 }
 

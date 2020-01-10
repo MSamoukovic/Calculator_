@@ -11,8 +11,15 @@ namespace Calculator_.Models
         public SubtractionOperator()
         {
             Symbol = '-';
-            precedence = 10;
-            parameterCount = 2;
+            Precedence = 10;
+            ParameterCount = 2;
+        }
+
+        public override Token getResult(Token firstOperator, Token secondOperator)
+        {
+            Token token = new Token();
+            token.TokenValue = secondOperator.getTokenValue() - firstOperator.getTokenValue();
+            return token;
         }
     }
 }

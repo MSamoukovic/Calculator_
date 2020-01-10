@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace Calculator_.Models
 {
-    class MultiplicationOperator : Oper
+    class MOperator : Oper
     {
-        public MultiplicationOperator()
+        public MOperator()
         {
-            Symbol = '*';
-            Precedence = 20;
+            Symbol = 'M';
+            Precedence = 40;
             ParameterCount = 2;
         }
-
         public override Token getResult(Token firstOperator, Token secondOperator)
         {
             Token token = new Token();
-            token.TokenValue = firstOperator.getTokenValue() * secondOperator.getTokenValue();
+            token.TokenValue = firstOperator.getTokenValue() * secondOperator.getTokenValue() + secondOperator.getTokenValue();
             return token;
         }
     }

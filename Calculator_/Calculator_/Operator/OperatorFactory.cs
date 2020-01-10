@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Calculator_.Models
 {
-    class ExpressionFactory
+    class OperatorFactory
     {
-        public static Oper getExpression(string operation)
+        public static Oper getInstance(string operation)
         {
             switch (operation)
             {
@@ -18,9 +18,20 @@ namespace Calculator_.Models
                     return new SubtractionOperator();
                 case "*":
                     return new MultiplicationOperator();
-                default:
+                case "/":
                     return new DivisionOperator();
+                case "M":
+                    return new MOperator();
+                default :
+                    throw new Exception("Unknown operator");
             }
+        }
+
+        public static string[] getOperators()
+        {
+            string[] operators = new[] { "+", "-", "*", "/", "M" };
+            return operators;
         }
     }
 }
+

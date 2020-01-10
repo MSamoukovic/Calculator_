@@ -11,8 +11,15 @@ namespace Calculator_.Models
         public DivisionOperator()
         {
             Symbol = '/';
-            precedence = 20;
-            parameterCount = 2;
+            Precedence = 20;
+            ParameterCount = 2;
+        }
+
+        public override Token getResult(Token firstOperator, Token secondOperator)
+        {
+            Token token = new Token();
+            token.TokenValue = secondOperator.getTokenValue() / firstOperator.getTokenValue();
+            return token;
         }
     }
 }

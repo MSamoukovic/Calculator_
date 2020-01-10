@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Calculator_.Models
 {
-     class Oper : Token
+   abstract  class Oper : Token
     {
-        public Oper( )
-        {
-        }
         TokenType tokenType = TokenType.Operator;
-
+        public abstract Token getResult(Token firstOperator, Token secondOperator);
     }
 }
